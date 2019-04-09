@@ -1,0 +1,133 @@
+<!DOCTYPE html><html lang="zh-CN"><head><meta name="generator" content="Hexo 3.8.0"><meta http-equiv="content-type" content="text/html; charset=utf-8"><meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport"><meta content="yes" name="apple-mobile-web-app-capable"><meta content="black-translucent" name="apple-mobile-web-app-status-bar-style"><meta content="telephone=no" name="format-detection"><meta name="description"><title>Android暑期实习面经部分笔试记录（一） | Hopkin</title><link rel="stylesheet" type="text/css" href="/css/style.css?v=0.0.0"><link rel="stylesheet" type="text/css" href="//lib.baomitu.com/normalize/8.0.1/normalize.min.css"><link rel="stylesheet" type="text/css" href="//lib.baomitu.com/pure/1.0.0/pure-min.css"><link rel="stylesheet" type="text/css" href="//lib.baomitu.com/pure/1.0.0/grids-responsive-min.css"><link rel="stylesheet" href="//lib.baomitu.com/font-awesome/4.7.0/css/font-awesome.min.css"><script type="text/javascript" src="//lib.baomitu.com/jquery/3.3.1/jquery.min.js"></script><link rel="icon" mask="" sizes="any" href="/favicon.ico"><link rel="Shortcut Icon" type="image/x-icon" href="/favicon.ico"><link rel="apple-touch-icon" href="/apple-touch-icon.png"><link rel="apple-touch-icon-precomposed" href="/apple-touch-icon.png"></head><body><div class="body_container"><div id="header"><div class="site-name"><h1 class="hidden">Android暑期实习面经部分笔试记录（一）</h1><a id="logo" href="/.">Hopkin</a><p class="description">一个普通程序员的碎碎念 (。・∀・)ノ</p></div><div id="nav-menu"><a class="current" href="/."><i class="fa fa-home"> 首页</i></a><a href="/archives/"><i class="fa fa-archive"> 归档</i></a><a href="/about/"><i class="fa fa-user"> 关于</i></a></div></div><div class="pure-g" id="layout"><div class="pure-u-1 pure-u-md-3-4"><div class="content_container"><div class="post"><h1 class="post-title">Android暑期实习面经部分笔试记录（一）</h1><div class="post-meta">Mar 16, 2018<span> | </span><span class="category"><a href="/categories/计算机基础/">计算机基础</a><a href="/categories/计算机基础/Android知识/">Android知识</a></span></div><div class="post-content"><h1 id="Android暑期实习面经记录"><a href="#Android暑期实习面经记录" class="headerlink" title="Android暑期实习面经记录"></a>Android暑期实习面经记录</h1><h2 id="阿里一面，15min"><a href="#阿里一面，15min" class="headerlink" title="阿里一面，15min"></a>阿里一面，15min</h2><p>估计阿里一开始也是没打算要我的， = =面试管聊了不久，也没问什么问题，都是闲聊。</p>
+<ul>
+<li>项目</li>
+<li>单向链表(插入，删除快)</li>
+<li>双向链表(这个就厉害了，比如LinkedList，比如LinkedHashMap，使用双链表刚好可以实现队列的功能，并且是双队列Dequeue)</li>
+<li>各自的应用</li>
+<li>归并排序</li>
+</ul>
+<hr>
+<h2 id="腾讯一面-57min"><a href="#腾讯一面-57min" class="headerlink" title="腾讯一面,57min"></a>腾讯一面,57min</h2><ul>
+<li>项目</li>
+<li>ViewPager优化(其实就是View的复用，可参考ListView的优化思想，将View放到集合中去，初始化时找不到才加载，销毁前将View保存)</li>
+<li>RecyclerView与ListView,还有RecyclerView的下拉加载和上拉更新怎么实现，比如下拉的橡皮筋效果</li>
+<li>自定义View的实现，事件分发机制</li>
+<li>View的嵌套滑动冲突(比如水平和竖直可通过水平和垂直方向距离判断)</li>
+<li>TCP/IP协议族。讲一讲每一层的实现，传输层的可靠性，滑动窗口和流量控制、拥塞控制</li>
+<li>Java内存模型</li>
+<li>Java垃圾回收机制</li>
+<li>线程池以及多线程，线程池的阻塞队列</li>
+<li>Android消息机制</li>
+<li>OOM发生的情景和原因以及解决办法</li>
+<li>Bitmap的优化</li>
+<li>归并排序和快速排序</li>
+<li>Java对象引用的类型，强引用，软引用，弱引用，虚引用</li>
+</ul>
+<p>###算法题###</p>
+<ul>
+<li>数组循环右移n位，利用最少辅助变量解决</li>
+<li>一个正序的数组，一个逆序的数组，如何将它们排序</li>
+<li>100层楼问题，2个玻璃球，从某一层楼掉下去会碎，某一层楼以上不会，那么试验时找出楼层所用实验次数的最坏次数最少？</li>
+</ul>
+<hr>
+<p>第一个问题</p>
+<p>1.可以利用空间换取时间，新建一个数组，将后m位放到新数组前m位，前面的放到新数组后面，新数组再赋值到原来数组。时间复杂度O(n),空间复杂度O(n)。<br>2.从最后一位开始，一次移动一位，m为就循环m次。时间复杂度O(n^2),空间复杂度O(1)。<br>3.将原数组反序，再将前m位反序，再将后面的反序，即完成。时间复杂度为O(n)，空间复杂度为0，为最优解。</p>
+<p>第二个问题</p>
+<p>这个一个动态规划题。动态规划与分治法有什么区别？个人理解分治法将问题分成若干子问题，每个子问题接下来又分成若干子问题，然后从最小子问题开始将所有问题逐个求解，便得到最终解，所有子问题<strong>互相独立</strong>，通常采用递归实现，典型如数组的归并排序。</p>
+<p>dp(动态规划)则是将问题分解成若干子问题，每个子问题也可继续分为若干子问题，然而子问题之间不是互相独立的，而是存在<strong>重复解</strong>，并且最小子问题是有状态的，这个<strong>状态必须能够进行传递</strong>。典型如斐波契斯数列，Fn = F(n-1)+F(n-2),F(1)=F(2)=1。其中F(1)和F(2)为最小子问题，并且他们的状态(值)必须传递给F(3)，也就是递归式其实是<strong>状态传递方程</strong>，其中比如F(5)=F(3)+F(4)，F(3)=F(2)+F(1),F(4)=F(3)+F(2),其中就存在重复求解了，所以dp就是为了<strong>消除这种重复求解</strong>，解决办法就是把每个过程的计算结果(帅选结果或加减结果)保存到数组dp里面，这样子每次就只是取已经保存的结果，不必重复计算了，其实就是空间换时间。典型式子为 dp[i] = dp[i-1] + dp[i-2]。</p>
+<p>回到上题，假设第k层摔玻璃球，要么碎要么不碎，如果碎了就只有一个球，只能从一楼试，若没碎，则有两个球，当然不是从k+1试啦，可以等效一开始，进行递归。状态方程为 dp[i] = Min(Max(1,dp[i-1]+1),Max(2,dp[i-2]+1),..Max(i-1,dp[1]+1))，dp[1] = 1。需要两层循环，时间为O(n^2)，空间为O(n)。</p>
+<p>回溯法的要点：<br>1.构造问题的解空间树，得到问题所有解<br>2.根据解空间树的特点回溯搜索整棵树<br>3.输出每一次符合要求的解x[]，也就是成功遍历到了树的最后一层</p>
+<p>递归伪代码<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">   <span class="comment">//从第0层开始搜索</span></span><br><span class="line">   backTrace(<span class="keyword">int</span> deep)&#123;</span><br><span class="line">   <span class="comment">//搜索层次大于树的层次，说明已经成功得到一个解</span></span><br><span class="line"><span class="keyword">if</span>(deep&gt;=totalDeep)&#123;</span><br><span class="line">   printf(x)<span class="comment">//输出解</span></span><br><span class="line">   <span class="keyword">return</span> ;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">//遍历子树</span></span><br><span class="line">   <span class="keyword">for</span>(i = <span class="number">0</span> to <span class="number">1</span>)&#123;</span><br><span class="line">   x[i] = <span class="number">0</span>/<span class="number">1</span> <span class="comment">// x[i]该赋的值</span></span><br><span class="line">   <span class="keyword">if</span>(赋值x[i]后该结点是活结点 &amp;&amp; 界限函数)&#123;</span><br><span class="line">	   backTrace(deep++) <span class="comment">//搜索第deep+1层的解</span></span><br><span class="line">   &#125;</span><br><span class="line">&#125;</span><br><span class="line">   &#125;</span><br></pre></td></tr></table></figure></p>
+<h2 id="威锋网一面（多人面）-20min"><a href="#威锋网一面（多人面）-20min" class="headerlink" title="威锋网一面（多人面） 20min"></a>威锋网一面（多人面） 20min</h2><p>一个HR,一个技术人员好像，两个人一共只面了20min左右，全是关于安卓。</p>
+<ul>
+<li>项目</li>
+<li>RecyclerView、ListView（囧，这俩货必问，却不是很熟悉，该补补了）他们的异同（缓存原理、ViewHodler、缓存View、LayoutManager、ItemDecoration、ItemAnimator、点击OnItemClickListener、OnItemTouchListener、数据源更新等）</li>
+<li>说说都有哪些设计模式？大概讲了6-7种就问他还要不讲，他说不用了= =</li>
+<li>BaseAdapter的原理</li>
+<li>自定义动画实现</li>
+<li>进程间的通信</li>
+</ul>
+<h2 id="最近笔试部分题目"><a href="#最近笔试部分题目" class="headerlink" title="最近笔试部分题目"></a>最近笔试部分题目</h2><h3 id="布局优化怎么优化"><a href="#布局优化怎么优化" class="headerlink" title="布局优化怎么优化"></a>布局优化怎么优化</h3><ul>
+<li>include标签复用</li>
+<li>merge标签合并</li>
+<li>viewstub</li>
+<li>使用relativeyout，constrainslayout等<h3 id="AsyncTask使用注意的"><a href="#AsyncTask使用注意的" class="headerlink" title="AsyncTask使用注意的"></a>AsyncTask使用注意的</h3></li>
+<li>对象只能在UI线程创建和执行，只执行一次</li>
+<li>默认串行执行，并发用executeOnExecutor()</li>
+<li>线程池核心线程分别为1和5<h3 id="其他"><a href="#其他" class="headerlink" title="其他"></a>其他</h3></li>
+<li>ICMP协议(网际报文控制协议，包括询问报文和差错报告报文)</li>
+<li>编译原理(词法分析，分析关键字，单词等，谁是谁；语法分析，分析语句要做什么；语义分析，分析这样做对不对，比如类型不匹配等)</li>
+<li>数据库连接join  <a href="https://blog.csdn.net/xiazdong/article/details/7517375" title="数据库复习" target="_blank" rel="noopener">数据库复习</a></li>
+<li>intent-filter和过滤器数量和规则(可以多个filter，只要匹配一个即可，action data 只要匹配任意一个就ok，category需要intent的category包含在filter里面)</li>
+<li>算法题就不说了</li>
+</ul>
+<h2 id="美图一面-17min"><a href="#美图一面-17min" class="headerlink" title="美图一面 17min"></a>美图一面 17min</h2><p><em>美图笔试后以为挂了，结果面试官来了个电话说过了= =</em></p>
+<ul>
+<li>关于专业成绩项目经验等等</li>
+<li>问了下专业课和数据结构之类，没有详细问</li>
+<li>个人的工作意愿，对美图的了解和未来的一些计划打算等</li>
+<li>Java和安卓的异同</li>
+<li>Java的内部类</li>
+<li>线程安全</li>
+<li>Java的引用类型</li>
+<li>还有记不住了 = =</li>
+</ul>
+<h2 id="美图二面-17min"><a href="#美图二面-17min" class="headerlink" title="美图二面 17min"></a>美图二面 17min</h2><ul>
+<li>自我介绍、学业、专业、项目</li>
+<li>HashMap线程安全吗？为什么？用什么替代？</li>
+<li>app用户按了Home键的话，开发者要注意什么？</li>
+<li>View的一个绘制过程</li>
+<li>多态，方法的重写和重载区别</li>
+<li>个人的一些兴趣爱好和职业规划</li>
+<li>other</li>
+</ul>
+<h2 id="今日头条一面-30min"><a href="#今日头条一面-30min" class="headerlink" title="今日头条一面 30min"></a>今日头条一面 30min</h2><ul>
+<li>static关键字的用法和意义</li>
+<li>synchorized关键字</li>
+<li>SharePreference的apply()和commit()</li>
+</ul>
+<p>1.apply方法失败成功没有返回值，commit有<br>2.apply先写入内存，并发时后面会覆盖前面，commit直接写入磁盘，并发时会阻塞<br>3.并发commit时apply在执行或者其他commit在执行，commit会阻塞</p>
+<ul>
+<li>Activity和Fragment生命周期，onDestroy调用情况（进程异常终止或者被后台强制回收时是不会调用onDestroy的，包括Fragment）</li>
+<li>ThreadLocal原理</li>
+<li>RecyclerView内存多少个item和怎么获取当前可见view的个数</li>
+<li>自定义View</li>
+<li>TextView之类的hint怎么实现(一开始说了自定义View和仿写源码之类的，后面说了用一个view进行显示和隐藏，其实还有属性drawableLeft等)</li>
+<li>SparseArray和HashMap（ArrayMap）</li>
+</ul>
+<p>关于SparseArray和ArrayMap<br><img src="https://img-blog.csdn.net/20180409171758219?watermark/2/text/aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3NpbmF0XzMzODc4ODc4/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70" alt="这里写图片描述"></p>
+<h2 id="今日头条二面-30min"><a href="#今日头条二面-30min" class="headerlink" title="今日头条二面 30min"></a>今日头条二面 30min</h2><ul>
+<li>service的生命周期(两种)，bindService的context被回收了，service还存活吗？</li>
+<li>自定义View,draw的具体逻辑，自定义过最复杂的View是什么？</li>
+<li>Handler消息机制</li>
+<li>AIDL机制，以及阻塞和监听等</li>
+<li>RecyclerView怎么进行滚动的</li>
+<li>算法题：两个大数怎么相加？Long放不下。</li>
+</ul>
+<p>解法：使用链表，每一位是一个结点，第一个节点开始两个链表分别遍历按位(结点)相加，进位和前面相加就可以。(在面试官提醒下勉强解答出来= =)</p>
+<h2 id="腾讯笔试后一面（现场面）-50min"><a href="#腾讯笔试后一面（现场面）-50min" class="headerlink" title="腾讯笔试后一面（现场面） 50min"></a>腾讯笔试后一面（现场面） 50min</h2><ul>
+<li>手撕代码</li>
+<li>算法题，100个石头排一列，A和B轮流取，一次可以去任意一个和相邻两个，A有没有必胜策略,当时题意都没搞懂，自然解不出。原题在《编程之美》里面，有变形</li>
+<li>RecyclerView的缓存原理，二级缓存和四级缓存究竟怎么回事？死磕底层，偏偏我提了这个</li>
+<li>死磕Java某些底层，比如HashMap扩容时链表怎么迁移？为什么？hashcode底层怎么实现？</li>
+<li>50分钟都在讨论底层，凉透了。面试官建议说我代码风格不好(字丑手写代码有什么办法= =),建议简历上的东西要深入研究到底为止。凉透了</li>
+</ul>
+<h2 id="网易有道一面-37min"><a href="#网易有道一面-37min" class="headerlink" title="网易有道一面 37min"></a>网易有道一面 37min</h2><p><em>第一天投第二天就电面了，最后知道是急招，虽然我时间不符合他们要求，但是就当是打怪升级吧</em></p>
+<ul>
+<li>关于我项目的MVP，为什么要MVP,有什么好处？还有项目里某个函数为什么要那么写</li>
+<li>设计模式以及为什么要使用设计模式？举例说明</li>
+<li>面向对象的特点和好处，封装继承多态之类</li>
+<li>RxJava和Retrofit的好处</li>
+<li>Android的线程安全和线程建立，List集合相关等</li>
+<li>创建线程的方式，答了Thread，runnable，线程池等，面试官一直问还有吗？最后提示RxJava的线程，但是我不知道他怎么实现的</li>
+<li>数据库事务的特点以及为什么要有事务</li>
+<li>static关键字</li>
+<li>Java内存模型</li>
+<li>Java垃圾回收机制</li>
+<li>Android内存泄漏</li>
+<li>OOM</li>
+</ul>
+<h2 id="网易有道二面（现场面）"><a href="#网易有道二面（现场面）" class="headerlink" title="网易有道二面（现场面）"></a>网易有道二面（现场面）</h2><ul>
+<li>手撕代码（字符串单词标点符号顺序截取，不许用split，凉凉）</li>
+</ul>
+</div><div><ul class="post-copyright"><li class="post-copyright-author"><strong>本文作者：</strong>hopkin</li><li class="post-copyright-link"><strong>本文链接：</strong><a href="/2018/03/16/Android暑期实习面经部分笔试记录（一）/">https://hb-pencil.github.io/2018/03/16/Android暑期实习面经部分笔试记录（一）/</a></li><li class="post-copyright-license"><strong>版权声明：</strong>Copyright © 2019 Hopkin</li></ul></div><br><script type="text/javascript" src="/js/share.js?v=0.0.0" async></script><a class="article-share-link" data-url="https://hb-pencil.github.io/2018/03/16/Android暑期实习面经部分笔试记录（一）/" data-id="cju9x41dk002xcgib8g2d6fia" data-qrcode="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAPYAAAD2CAAAAADAeSUUAAADM0lEQVR42u3a0W7jQAgF0P7/T2dft6o8uYBbJeT4KXJiew6WgoD5+oqPx3/H1bc/P5/PXF31+HGcn3W1qhsObGxs7DdhP45HstAEWQ3ieSVJIM7hw8bGxt7HztPSOWE8bjp6CTJ/GdjY2NjYT9LDoFTIAzFJq9jY2NjYybV5kVMtY+YFEjY2NvY+drWV02sYnZebXNVLrtjY2Ni72Xl58Pqff2W+jY2Njf3C7EnLPm/xJMtKCoyktRQpsLGxsRex8wRQJeXNpl76rN4HGxsbeys7ac330lg1oEka69Ua2NjY2LvZhSxXbDBVA1dNZvnaCoHDxsbGfnN28qefD2LnzaPqCLm6TRMbGxt7N7uXHqpnkq2WeYvq/PvLV4KNjY29gp0nhgRQTT93DR7KAcLGxsZewc4HqOfzSdqotp8m7a3b5sbY2NjYL8/O//QT0mQbTZ6uktcTjQewsbGxV7Afx6M6dq0mnmS5+f3zVIqNjY29iV1NFXkBcG/rfz5gLhQk2NjY2G/FniSee4e1eVuq18b6dgYbGxv7Y9h5iVJtJPXGFfnvnzwXGxsbexE7v7iauvLw5Wlp8htsbGzs3ex8odXBarUZVC1yegHCxsbG3sSuLjFPRdVmUy9k1UB8ayphY2NjL2InSShvP/32Vp786ZcpExsbG3sdO08MvWZTsza6aT2XUxFsbGzsReykhMiTXE7Ky568zIhSJjY2NvYi9nxzTC9Y1aFsdSwRbSTCxsbGXsG+d3w7GTBMBg/V5hc2Njb2Vnb54mIIesHqXfskmWFjY2MvYt+1fzNv6EwGwL2S5klYsbGxsVewq+34fIjbu2c1BPm32NjY2LvZScLojQryLT7Vpn++8sspNzY2NvYido862S6Zw+abgbCxsbG3sntj1/wBvY071QImT2nNmTM2Njb2C7N7CSAfEuTtoV6T69xImrw8bGxs7PdiJ8vtNev/sjgpl0/Y2NjY69hzUjVRNdv6dx3Y2NjYH8yeb8Q533m+fSe6DzY2NvbHs3ubeyabhCbJDBsbG/sT2HnjZj5erYYgaTlV74yNjY29id3rwPTO5MVMPnLOm1bY2NjY69j/APuvxHDaAN0NAAAAAElFTkSuQmCC">分享</a><div class="tags"><a href="/tags/经验记录/">经验记录</a></div><div class="post-nav"><a class="pre" href="/2018/03/26/基础算法记录（二）——部分常见算法问题/">基础算法记录（二）——部分常见算法问题</a><a class="next" href="/2018/02/20/JVMAndroid View知识点/">JVM/Android View知识点</a></div></div></div></div><div class="pure-u-1-4 hidden_mid_and_down"><div id="sidebar"><div class="widget"><div class="widget-title"><i class="fa fa-folder-o"> 分类</i></div><ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/计算机基础/">计算机基础</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/计算机基础/Android知识/">Android知识</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/计算机基础/数据结构与算法/">数据结构与算法</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/计算机基础/计算机网络/">计算机网络</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/计算机基础/计算机语言/">计算机语言</a></li></ul></li></ul></div><div class="widget"><div class="widget-title"><i class="fa fa-star-o"> 标签</i></div><div class="tagcloud"><a href="/tags/随笔杂文/" style="font-size: 15px;">随笔杂文</a> <a href="/tags/小技巧/" style="font-size: 15px;">小技巧</a> <a href="/tags/经验记录/" style="font-size: 15px;">经验记录</a> <a href="/tags/计算机知识/" style="font-size: 15px;">计算机知识</a> <a href="/tags/他山之石/" style="font-size: 15px;">他山之石</a> <a href="/tags/新技术/" style="font-size: 15px;">新技术</a> <a href="/tags/胡思乱想/" style="font-size: 15px;">胡思乱想</a></div></div><div class="widget"><div class="widget-title"><i class="fa fa-file-o"> 最近文章</i></div><ul class="post-list"><li class="post-list-item"><a class="post-list-link" href="/2019/03/08/Android自定义FlowLayout/">Android自定义FlowLayout</a></li><li class="post-list-item"><a class="post-list-link" href="/2019/01/22/打家劫舍123/">打家劫舍123</a></li><li class="post-list-item"><a class="post-list-link" href="/2019/01/16/N数之和/">N数之和</a></li><li class="post-list-item"><a class="post-list-link" href="/2019/01/10/一些思考和总结/">一些思考和总结</a></li><li class="post-list-item"><a class="post-list-link" href="/2019/01/10/2018年终总结/">2018年终总结</a></li><li class="post-list-item"><a class="post-list-link" href="/2018/12/28/部分高质量文章收藏/">部分高质量文章收藏</a></li><li class="post-list-item"><a class="post-list-link" href="/2018/12/26/Flutter相关文章收藏/">Flutter相关文章收藏</a></li><li class="post-list-item"><a class="post-list-link" href="/2018/10/10/背包问题之回溯和动态规划/">背包问题之回溯和动态规划</a></li><li class="post-list-item"><a class="post-list-link" href="/2018/08/07/Java常见锁的一些总结/">Java常见锁的一些总结</a></li><li class="post-list-item"><a class="post-list-link" href="/2018/08/01/【转】Android状态栏、导航栏、DecorView高度/">【转】Android状态栏、导航栏、DecorView高度</a></li></ul></div></div></div><div class="pure-u-1 pure-u-md-3-4"><div id="footer">Copyright © 2019 <a href="/." rel="nofollow">Hopkin.</a> Powered by<a rel="nofollow" target="_blank" href="https://hexo.io"> Hexo.</a><a rel="nofollow" target="_blank" href="https://github.com/tufu9441/maupassant-hexo"> Theme</a> by<a rel="nofollow" target="_blank" href="https://github.com/pagecho"> Cho.</a></div></div></div><a class="show" id="rocket" href="#top"></a><script type="text/javascript" src="/js/totop.js?v=0.0.0" async></script><script type="text/javascript" src="//lib.baomitu.com/fancybox/3.5.2/jquery.fancybox.min.js" async></script><script type="text/javascript" src="/js/fancybox.js?v=0.0.0" async></script><link rel="stylesheet" type="text/css" href="//lib.baomitu.com/fancybox/3.5.2/jquery.fancybox.min.css"><script type="text/javascript" src="/js/codeblock-resizer.js?v=0.0.0"></script><script type="text/javascript" src="/js/smartresize.js?v=0.0.0"></script></div></body></html>

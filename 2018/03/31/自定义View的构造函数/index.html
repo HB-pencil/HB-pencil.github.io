@@ -1,0 +1,724 @@
+<!DOCTYPE html><html lang="zh-CN"><head><meta name="generator" content="Hexo 3.8.0"><meta http-equiv="content-type" content="text/html; charset=utf-8"><meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport"><meta content="yes" name="apple-mobile-web-app-capable"><meta content="black-translucent" name="apple-mobile-web-app-status-bar-style"><meta content="telephone=no" name="format-detection"><meta name="description"><title>自定义View的构造函数 | Hopkin</title><link rel="stylesheet" type="text/css" href="/css/style.css?v=0.0.0"><link rel="stylesheet" type="text/css" href="//lib.baomitu.com/normalize/8.0.1/normalize.min.css"><link rel="stylesheet" type="text/css" href="//lib.baomitu.com/pure/1.0.0/pure-min.css"><link rel="stylesheet" type="text/css" href="//lib.baomitu.com/pure/1.0.0/grids-responsive-min.css"><link rel="stylesheet" href="//lib.baomitu.com/font-awesome/4.7.0/css/font-awesome.min.css"><script type="text/javascript" src="//lib.baomitu.com/jquery/3.3.1/jquery.min.js"></script><link rel="icon" mask="" sizes="any" href="/favicon.ico"><link rel="Shortcut Icon" type="image/x-icon" href="/favicon.ico"><link rel="apple-touch-icon" href="/apple-touch-icon.png"><link rel="apple-touch-icon-precomposed" href="/apple-touch-icon.png"></head><body><div class="body_container"><div id="header"><div class="site-name"><h1 class="hidden">自定义View的构造函数</h1><a id="logo" href="/.">Hopkin</a><p class="description">一个普通程序员的碎碎念 (。・∀・)ノ</p></div><div id="nav-menu"><a class="current" href="/."><i class="fa fa-home"> 首页</i></a><a href="/archives/"><i class="fa fa-archive"> 归档</i></a><a href="/about/"><i class="fa fa-user"> 关于</i></a></div></div><div class="pure-g" id="layout"><div class="pure-u-1 pure-u-md-3-4"><div class="content_container"><div class="post"><h1 class="post-title">自定义View的构造函数</h1><div class="post-meta">Mar 31, 2018<span> | </span><span class="category"><a href="/categories/计算机基础/">计算机基础</a><a href="/categories/计算机基础/Android知识/">Android知识</a></span></div><div class="post-content"><p><em>来自于早期博文2018年02月10日 16:46:50</em><br><a href="https://blog.csdn.net/sinat_33878878/article/details/79305579" target="_blank" rel="noopener">https://blog.csdn.net/sinat_33878878/article/details/79305579</a></p>
+<h3 id="一些琐碎的随手笔记"><a href="#一些琐碎的随手笔记" class="headerlink" title="一些琐碎的随手笔记"></a>一些琐碎的随手笔记</h3><ul>
+<li>canvas.drawBitmap()直接画图片，可以用matrix</li>
+<li>canvas.drawPath()直接按路径画</li>
+<li>canvas.drawXXX()直接画图形，可以用Shader加渲染效果，如渐变，和附加图片渲染BitmapShader</li>
+<li>canvas.clipPath()按路径裁剪画布</li>
+<li>new一个canvas时注意传入一个bimap实例，但是这个bitmap应该是未绘制的<h3 id="关于自定义View的四个构造函数"><a href="#关于自定义View的四个构造函数" class="headerlink" title="关于自定义View的四个构造函数"></a><strong>关于自定义View的四个构造函数</strong></h3></li>
+</ul>
+<h3 id="1-view-context-new一个view时调用"><a href="#1-view-context-new一个view时调用" class="headerlink" title="1.view(context) new一个view时调用"></a>1.view(context) new一个view时调用</h3><pre><code>/**
+ * Simple constructor to use when creating a view from code.
+ *
+ * @param context The Context the view is running in, through which it can
+ *        access the current theme, resources, etc.
+ */
+</code></pre><h3 id="2-view-context-attributeset-从xml加载时调用"><a href="#2-view-context-attributeset-从xml加载时调用" class="headerlink" title="2.view(context,attributeset) 从xml加载时调用"></a>2.view(context,attributeset) 从xml加载时调用</h3><pre><code>/**
+ * Constructor that is called when inflating a view *from XML. This is called
+ * when a view is being constructed from an XML file, *supplying attributes
+ * that were specified in the XML file. This version *uses a default style of
+ * 0, so the only attribute values applied are those *in the Context&apos;s Theme
+ * and the given AttributeSet.
+ *
+ * &lt;p&gt;
+ * The method onFinishInflate() will be called after *all children have been
+ * added.
+ *
+ * @param context The Context the view is running in, *through which it can
+ *        access the current theme, resources, etc.
+ * @param attrs The attributes of the XML tag that is *inflating the view.
+ * @see #View(Context, AttributeSet, int)
+ */
+</code></pre><h3 id="3-view-context-attributeset-defStyle-，不会被系统第一个调用"><a href="#3-view-context-attributeset-defStyle-，不会被系统第一个调用" class="headerlink" title="3. view(context,attributeset,defStyle)，不会被系统第一个调用"></a>3. view(context,attributeset,defStyle)，不会被系统第一个调用</h3><pre><code>/**
+ * Perform inflation from XML and apply a class-specific base style from a
+ * theme attribute. This constructor of View allows subclasses to use their
+ * own base style when they are inflating. For example, a Button class&apos;s
+ * constructor would call this version of the super class constructor and
+ * supply &lt;code&gt;R.attr.buttonStyle&lt;/code&gt; for &lt;var&gt;defStyleAttr&lt;/var&gt;; this
+ * allows the theme&apos;s button style to modify all of the base view attributes
+ * (in particular its background) as well as the Button class&apos;s attributes.
+ *
+ * @param context The Context the view is running in, through which it can
+ *access the current theme, resources, etc.
+ * @param attrs The attributes of the XML tag that is inflating the view.
+ * @param defStyleAttr An attribute in the current theme that contains a
+ *reference to a style resource that supplies default values for
+ *the view. Can be 0 to not look for defaults.
+ * @see #View(Context, AttributeSet)
+ */
+</code></pre><h3 id="4-view-context-attributeset-defstyle-defStyleRes-不会被第一个调用"><a href="#4-view-context-attributeset-defstyle-defStyleRes-不会被第一个调用" class="headerlink" title="4.view(context,attributeset,defstyle,defStyleRes)不会被第一个调用"></a>4.view(context,attributeset,defstyle,defStyleRes)不会被第一个调用</h3><pre><code>/**
+ * Perform inflation from XML and apply a class-specific base style from a
+ * theme attribute or style resource. This constructor of View allows
+ * subclasses to use their own base style when they are inflating.
+ * &lt;p&gt;
+ * When determining the final value of a particular attribute, there are
+ * four inputs that come into play:
+ * &lt;ol&gt;
+ * &lt;li&gt;Any attribute values in the given AttributeSet.
+ * &lt;li&gt;The style resource specified in the AttributeSet (named &quot;style&quot;).
+ * &lt;li&gt;The default style specified by &lt;var&gt;defStyleAttr&lt;/var&gt;.
+ * &lt;li&gt;The default style specified by &lt;var&gt;defStyleRes&lt;/var&gt;.
+ * &lt;li&gt;The base values in this theme.
+ * &lt;/ol&gt;
+ * &lt;p&gt;
+ * Each of these inputs is considered in-order, with the first listed taking
+ * precedence over the following ones. In other words, if in the
+ * AttributeSet you have supplied &lt;code&gt;&lt;Button * textColor=&quot;#ff000000&quot;&gt;&lt;/code&gt;
+ * , then the button&apos;s text will &lt;em&gt;always&lt;/em&gt; be black, regardless of
+ * what is specified in any of the styles.
+ *
+ * @param context The Context the view is running in, through which it can
+ *        access the current theme, resources, etc.
+ * @param attrs The attributes of the XML tag that is inflating the view.
+ * @param defStyleAttr An attribute in the current theme that contains a
+ *        reference to a style resource that supplies default values for
+ *        the view. Can be 0 to not look for defaults.
+ * @param defStyleRes A resource identifier of a style resource that
+ *        supplies default values for the view, used only if
+ *        defStyleAttr is 0 or can not be found in the theme. Can be 0
+ *        to not look for defaults.
+ * @see #View(Context, AttributeSet, int)
+ */
+
+
+super(context, attrs, defStyleAttr)；
+TypedArray ta = context.obtainStyledAttributes(attrs, R.styleable.MyCustomView); 从属性集查询属性
+</code></pre><p>{<br>        this(context);</p>
+<pre><code>    final TypedArray a = context.obtainStyledAttributes(
+            attrs, com.android.internal.R.styleable.View, defStyleAttr, defStyleRes);
+
+    if (mDebugViewAttributes) {
+        saveAttributeData(attrs, a);
+    }
+
+    Drawable background = null;
+
+    int leftPadding = -1;
+    int topPadding = -1;
+    int rightPadding = -1;
+    int bottomPadding = -1;
+    int startPadding = UNDEFINED_PADDING;
+    int endPadding = UNDEFINED_PADDING;
+
+    int padding = -1;
+    int paddingHorizontal = -1;
+    int paddingVertical = -1;
+
+    int viewFlagValues = 0;
+    int viewFlagMasks = 0;
+
+    boolean setScrollContainer = false;
+
+    int x = 0;
+    int y = 0;
+
+    float tx = 0;
+    float ty = 0;
+    float tz = 0;
+    float elevation = 0;
+    float rotation = 0;
+    float rotationX = 0;
+    float rotationY = 0;
+    float sx = 1f;
+    float sy = 1f;
+    boolean transformSet = false;
+
+    int scrollbarStyle = SCROLLBARS_INSIDE_OVERLAY;
+    int overScrollMode = mOverScrollMode;
+    boolean initializeScrollbars = false;
+    boolean initializeScrollIndicators = false;
+
+    boolean startPaddingDefined = false;
+    boolean endPaddingDefined = false;
+    boolean leftPaddingDefined = false;
+    boolean rightPaddingDefined = false;
+
+    final int targetSdkVersion = context.getApplicationInfo().targetSdkVersion;
+
+    // Set default values.
+    viewFlagValues |= FOCUSABLE_AUTO;
+    viewFlagMasks |= FOCUSABLE_AUTO;
+
+    final int N = a.getIndexCount();
+    for (int i = 0; i &lt; N; i++) {
+        int attr = a.getIndex(i);
+        switch (attr) {
+            case com.android.internal.R.styleable.View_background:
+                background = a.getDrawable(attr);
+                break;
+            case com.android.internal.R.styleable.View_padding:
+                padding = a.getDimensionPixelSize(attr, -1);
+                mUserPaddingLeftInitial = padding;
+                mUserPaddingRightInitial = padding;
+                leftPaddingDefined = true;
+                rightPaddingDefined = true;
+                break;
+            case com.android.internal.R.styleable.View_paddingHorizontal:
+                paddingHorizontal = a.getDimensionPixelSize(attr, -1);
+                mUserPaddingLeftInitial = paddingHorizontal;
+                mUserPaddingRightInitial = paddingHorizontal;
+                leftPaddingDefined = true;
+                rightPaddingDefined = true;
+                break;
+            case com.android.internal.R.styleable.View_paddingVertical:
+                paddingVertical = a.getDimensionPixelSize(attr, -1);
+                break;
+             case com.android.internal.R.styleable.View_paddingLeft:
+                leftPadding = a.getDimensionPixelSize(attr, -1);
+                mUserPaddingLeftInitial = leftPadding;
+                leftPaddingDefined = true;
+                break;
+            case com.android.internal.R.styleable.View_paddingTop:
+                topPadding = a.getDimensionPixelSize(attr, -1);
+                break;
+            case com.android.internal.R.styleable.View_paddingRight:
+                rightPadding = a.getDimensionPixelSize(attr, -1);
+                mUserPaddingRightInitial = rightPadding;
+                rightPaddingDefined = true;
+                break;
+            case com.android.internal.R.styleable.View_paddingBottom:
+                bottomPadding = a.getDimensionPixelSize(attr, -1);
+                break;
+            case com.android.internal.R.styleable.View_paddingStart:
+                startPadding = a.getDimensionPixelSize(attr, UNDEFINED_PADDING);
+                startPaddingDefined = (startPadding != UNDEFINED_PADDING);
+                break;
+            case com.android.internal.R.styleable.View_paddingEnd:
+                endPadding = a.getDimensionPixelSize(attr, UNDEFINED_PADDING);
+                endPaddingDefined = (endPadding != UNDEFINED_PADDING);
+                break;
+            case com.android.internal.R.styleable.View_scrollX:
+                x = a.getDimensionPixelOffset(attr, 0);
+                break;
+            case com.android.internal.R.styleable.View_scrollY:
+                y = a.getDimensionPixelOffset(attr, 0);
+                break;
+            case com.android.internal.R.styleable.View_alpha:
+                setAlpha(a.getFloat(attr, 1f));
+                break;
+            case com.android.internal.R.styleable.View_transformPivotX:
+                setPivotX(a.getDimension(attr, 0));
+                break;
+            case com.android.internal.R.styleable.View_transformPivotY:
+                setPivotY(a.getDimension(attr, 0));
+                break;
+            case com.android.internal.R.styleable.View_translationX:
+                tx = a.getDimension(attr, 0);
+                transformSet = true;
+                break;
+            case com.android.internal.R.styleable.View_translationY:
+                ty = a.getDimension(attr, 0);
+                transformSet = true;
+                break;
+            case com.android.internal.R.styleable.View_translationZ:
+                tz = a.getDimension(attr, 0);
+                transformSet = true;
+                break;
+            case com.android.internal.R.styleable.View_elevation:
+                elevation = a.getDimension(attr, 0);
+                transformSet = true;
+                break;
+            case com.android.internal.R.styleable.View_rotation:
+                rotation = a.getFloat(attr, 0);
+                transformSet = true;
+                break;
+            case com.android.internal.R.styleable.View_rotationX:
+                rotationX = a.getFloat(attr, 0);
+                transformSet = true;
+                break;
+            case com.android.internal.R.styleable.View_rotationY:
+                rotationY = a.getFloat(attr, 0);
+                transformSet = true;
+                break;
+            case com.android.internal.R.styleable.View_scaleX:
+                sx = a.getFloat(attr, 1f);
+                transformSet = true;
+                break;
+            case com.android.internal.R.styleable.View_scaleY:
+                sy = a.getFloat(attr, 1f);
+                transformSet = true;
+                break;
+            case com.android.internal.R.styleable.View_id:
+                mID = a.getResourceId(attr, NO_ID);
+                break;
+            case com.android.internal.R.styleable.View_tag:
+                mTag = a.getText(attr);
+                break;
+            case com.android.internal.R.styleable.View_fitsSystemWindows:
+                if (a.getBoolean(attr, false)) {
+                    viewFlagValues |= FITS_SYSTEM_WINDOWS;
+                    viewFlagMasks |= FITS_SYSTEM_WINDOWS;
+                }
+                break;
+            case com.android.internal.R.styleable.View_focusable:
+                viewFlagValues = (viewFlagValues &amp; ~FOCUSABLE_MASK) | getFocusableAttribute(a);
+                if ((viewFlagValues &amp; FOCUSABLE_AUTO) == 0) {
+                    viewFlagMasks |= FOCUSABLE_MASK;
+                }
+                break;
+            case com.android.internal.R.styleable.View_focusableInTouchMode:
+                if (a.getBoolean(attr, false)) {
+                    // unset auto focus since focusableInTouchMode implies explicit focusable
+                    viewFlagValues &amp;= ~FOCUSABLE_AUTO;
+                    viewFlagValues |= FOCUSABLE_IN_TOUCH_MODE | FOCUSABLE;
+                    viewFlagMasks |= FOCUSABLE_IN_TOUCH_MODE | FOCUSABLE_MASK;
+                }
+                break;
+            case com.android.internal.R.styleable.View_clickable:
+                if (a.getBoolean(attr, false)) {
+                    viewFlagValues |= CLICKABLE;
+                    viewFlagMasks |= CLICKABLE;
+                }
+                break;
+            case com.android.internal.R.styleable.View_longClickable:
+                if (a.getBoolean(attr, false)) {
+                    viewFlagValues |= LONG_CLICKABLE;
+                    viewFlagMasks |= LONG_CLICKABLE;
+                }
+                break;
+            case com.android.internal.R.styleable.View_contextClickable:
+                if (a.getBoolean(attr, false)) {
+                    viewFlagValues |= CONTEXT_CLICKABLE;
+                    viewFlagMasks |= CONTEXT_CLICKABLE;
+                }
+                break;
+            case com.android.internal.R.styleable.View_saveEnabled:
+                if (!a.getBoolean(attr, true)) {
+                    viewFlagValues |= SAVE_DISABLED;
+                    viewFlagMasks |= SAVE_DISABLED_MASK;
+                }
+                break;
+            case com.android.internal.R.styleable.View_duplicateParentState:
+                if (a.getBoolean(attr, false)) {
+                    viewFlagValues |= DUPLICATE_PARENT_STATE;
+                    viewFlagMasks |= DUPLICATE_PARENT_STATE;
+                }
+                break;
+            case com.android.internal.R.styleable.View_visibility:
+                final int visibility = a.getInt(attr, 0);
+                if (visibility != 0) {
+                    viewFlagValues |= VISIBILITY_FLAGS[visibility];
+                    viewFlagMasks |= VISIBILITY_MASK;
+                }
+                break;
+            case com.android.internal.R.styleable.View_layoutDirection:
+                // Clear any layout direction flags (included resolved bits) already set
+                mPrivateFlags2 &amp;=
+                        ~(PFLAG2_LAYOUT_DIRECTION_MASK | PFLAG2_LAYOUT_DIRECTION_RESOLVED_MASK);
+                // Set the layout direction flags depending on the value of the attribute
+                final int layoutDirection = a.getInt(attr, -1);
+                final int value = (layoutDirection != -1) ?
+                        LAYOUT_DIRECTION_FLAGS[layoutDirection] : LAYOUT_DIRECTION_DEFAULT;
+                mPrivateFlags2 |= (value &lt;&lt; PFLAG2_LAYOUT_DIRECTION_MASK_SHIFT);
+                break;
+            case com.android.internal.R.styleable.View_drawingCacheQuality:
+                final int cacheQuality = a.getInt(attr, 0);
+                if (cacheQuality != 0) {
+                    viewFlagValues |= DRAWING_CACHE_QUALITY_FLAGS[cacheQuality];
+                    viewFlagMasks |= DRAWING_CACHE_QUALITY_MASK;
+                }
+                break;
+            case com.android.internal.R.styleable.View_contentDescription:
+                setContentDescription(a.getString(attr));
+                break;
+            case com.android.internal.R.styleable.View_accessibilityTraversalBefore:
+                setAccessibilityTraversalBefore(a.getResourceId(attr, NO_ID));
+                break;
+            case com.android.internal.R.styleable.View_accessibilityTraversalAfter:
+                setAccessibilityTraversalAfter(a.getResourceId(attr, NO_ID));
+                break;
+            case com.android.internal.R.styleable.View_labelFor:
+                setLabelFor(a.getResourceId(attr, NO_ID));
+                break;
+            case com.android.internal.R.styleable.View_soundEffectsEnabled:
+                if (!a.getBoolean(attr, true)) {
+                    viewFlagValues &amp;= ~SOUND_EFFECTS_ENABLED;
+                    viewFlagMasks |= SOUND_EFFECTS_ENABLED;
+                }
+                break;
+            case com.android.internal.R.styleable.View_hapticFeedbackEnabled:
+                if (!a.getBoolean(attr, true)) {
+                    viewFlagValues &amp;= ~HAPTIC_FEEDBACK_ENABLED;
+                    viewFlagMasks |= HAPTIC_FEEDBACK_ENABLED;
+                }
+                break;
+            case R.styleable.View_scrollbars:
+                final int scrollbars = a.getInt(attr, SCROLLBARS_NONE);
+                if (scrollbars != SCROLLBARS_NONE) {
+                    viewFlagValues |= scrollbars;
+                    viewFlagMasks |= SCROLLBARS_MASK;
+                    initializeScrollbars = true;
+                }
+                break;
+            //noinspection deprecation
+            case R.styleable.View_fadingEdge:
+                if (targetSdkVersion &gt;= Build.VERSION_CODES.ICE_CREAM_SANDWICH) {
+                    // Ignore the attribute starting with ICS
+                    break;
+                }
+                // With builds &lt; ICS, fall through and apply fading edges
+            case R.styleable.View_requiresFadingEdge:
+                final int fadingEdge = a.getInt(attr, FADING_EDGE_NONE);
+                if (fadingEdge != FADING_EDGE_NONE) {
+                    viewFlagValues |= fadingEdge;
+                    viewFlagMasks |= FADING_EDGE_MASK;
+                    initializeFadingEdgeInternal(a);
+                }
+                break;
+            case R.styleable.View_scrollbarStyle:
+                scrollbarStyle = a.getInt(attr, SCROLLBARS_INSIDE_OVERLAY);
+                if (scrollbarStyle != SCROLLBARS_INSIDE_OVERLAY) {
+                    viewFlagValues |= scrollbarStyle &amp; SCROLLBARS_STYLE_MASK;
+                    viewFlagMasks |= SCROLLBARS_STYLE_MASK;
+                }
+                break;
+            case R.styleable.View_isScrollContainer:
+                setScrollContainer = true;
+                if (a.getBoolean(attr, false)) {
+                    setScrollContainer(true);
+                }
+                break;
+            case com.android.internal.R.styleable.View_keepScreenOn:
+                if (a.getBoolean(attr, false)) {
+                    viewFlagValues |= KEEP_SCREEN_ON;
+                    viewFlagMasks |= KEEP_SCREEN_ON;
+                }
+                break;
+            case R.styleable.View_filterTouchesWhenObscured:
+                if (a.getBoolean(attr, false)) {
+                    viewFlagValues |= FILTER_TOUCHES_WHEN_OBSCURED;
+                    viewFlagMasks |= FILTER_TOUCHES_WHEN_OBSCURED;
+                }
+                break;
+            case R.styleable.View_nextFocusLeft:
+                mNextFocusLeftId = a.getResourceId(attr, View.NO_ID);
+                break;
+            case R.styleable.View_nextFocusRight:
+                mNextFocusRightId = a.getResourceId(attr, View.NO_ID);
+                break;
+            case R.styleable.View_nextFocusUp:
+                mNextFocusUpId = a.getResourceId(attr, View.NO_ID);
+                break;
+            case R.styleable.View_nextFocusDown:
+                mNextFocusDownId = a.getResourceId(attr, View.NO_ID);
+                break;
+            case R.styleable.View_nextFocusForward:
+                mNextFocusForwardId = a.getResourceId(attr, View.NO_ID);
+                break;
+            case R.styleable.View_nextClusterForward:
+                mNextClusterForwardId = a.getResourceId(attr, View.NO_ID);
+                break;
+            case R.styleable.View_minWidth:
+                mMinWidth = a.getDimensionPixelSize(attr, 0);
+                break;
+            case R.styleable.View_minHeight:
+                mMinHeight = a.getDimensionPixelSize(attr, 0);
+                break;
+            case R.styleable.View_onClick:
+                if (context.isRestricted()) {
+                    throw new IllegalStateException(&quot;The android:onClick attribute cannot &quot;
+                            + &quot;be used within a restricted context&quot;);
+                }
+
+                final String handlerName = a.getString(attr);
+                if (handlerName != null) {
+                    setOnClickListener(new DeclaredOnClickListener(this, handlerName));
+                }
+                break;
+            case R.styleable.View_overScrollMode:
+                overScrollMode = a.getInt(attr, OVER_SCROLL_IF_CONTENT_SCROLLS);
+                break;
+            case R.styleable.View_verticalScrollbarPosition:
+                mVerticalScrollbarPosition = a.getInt(attr, SCROLLBAR_POSITION_DEFAULT);
+                break;
+            case R.styleable.View_layerType:
+                setLayerType(a.getInt(attr, LAYER_TYPE_NONE), null);
+                break;
+            case R.styleable.View_textDirection:
+                // Clear any text direction flag already set
+                mPrivateFlags2 &amp;= ~PFLAG2_TEXT_DIRECTION_MASK;
+                // Set the text direction flags depending on the value of the attribute
+                final int textDirection = a.getInt(attr, -1);
+                if (textDirection != -1) {
+                    mPrivateFlags2 |= PFLAG2_TEXT_DIRECTION_FLAGS[textDirection];
+                }
+                break;
+            case R.styleable.View_textAlignment:
+                // Clear any text alignment flag already set
+                mPrivateFlags2 &amp;= ~PFLAG2_TEXT_ALIGNMENT_MASK;
+                // Set the text alignment flag depending on the value of the attribute
+                final int textAlignment = a.getInt(attr, TEXT_ALIGNMENT_DEFAULT);
+                mPrivateFlags2 |= PFLAG2_TEXT_ALIGNMENT_FLAGS[textAlignment];
+                break;
+            case R.styleable.View_importantForAccessibility:
+                setImportantForAccessibility(a.getInt(attr,
+                        IMPORTANT_FOR_ACCESSIBILITY_DEFAULT));
+                break;
+            case R.styleable.View_accessibilityLiveRegion:
+                setAccessibilityLiveRegion(a.getInt(attr, ACCESSIBILITY_LIVE_REGION_DEFAULT));
+                break;
+            case R.styleable.View_transitionName:
+                setTransitionName(a.getString(attr));
+                break;
+            case R.styleable.View_nestedScrollingEnabled:
+                setNestedScrollingEnabled(a.getBoolean(attr, false));
+                break;
+            case R.styleable.View_stateListAnimator:
+                setStateListAnimator(AnimatorInflater.loadStateListAnimator(context,
+                        a.getResourceId(attr, 0)));
+                break;
+            case R.styleable.View_backgroundTint:
+                // This will get applied later during setBackground().
+                if (mBackgroundTint == null) {
+                    mBackgroundTint = new TintInfo();
+                }
+                mBackgroundTint.mTintList = a.getColorStateList(
+                        R.styleable.View_backgroundTint);
+                mBackgroundTint.mHasTintList = true;
+                break;
+            case R.styleable.View_backgroundTintMode:
+                // This will get applied later during setBackground().
+                if (mBackgroundTint == null) {
+                    mBackgroundTint = new TintInfo();
+                }
+                mBackgroundTint.mTintMode = Drawable.parseTintMode(a.getInt(
+                        R.styleable.View_backgroundTintMode, -1), null);
+                mBackgroundTint.mHasTintMode = true;
+                break;
+            case R.styleable.View_outlineProvider:
+                setOutlineProviderFromAttribute(a.getInt(R.styleable.View_outlineProvider,
+                        PROVIDER_BACKGROUND));
+                break;
+            case R.styleable.View_foreground:
+                if (targetSdkVersion &gt;= Build.VERSION_CODES.M || this instanceof FrameLayout) {
+                    setForeground(a.getDrawable(attr));
+                }
+                break;
+            case R.styleable.View_foregroundGravity:
+                if (targetSdkVersion &gt;= Build.VERSION_CODES.M || this instanceof FrameLayout) {
+                    setForegroundGravity(a.getInt(attr, Gravity.NO_GRAVITY));
+                }
+                break;
+            case R.styleable.View_foregroundTintMode:
+                if (targetSdkVersion &gt;= Build.VERSION_CODES.M || this instanceof FrameLayout) {
+                    setForegroundTintMode(Drawable.parseTintMode(a.getInt(attr, -1), null));
+                }
+                break;
+            case R.styleable.View_foregroundTint:
+                if (targetSdkVersion &gt;= Build.VERSION_CODES.M || this instanceof FrameLayout) {
+                    setForegroundTintList(a.getColorStateList(attr));
+                }
+                break;
+            case R.styleable.View_foregroundInsidePadding:
+                if (targetSdkVersion &gt;= Build.VERSION_CODES.M || this instanceof FrameLayout) {
+                    if (mForegroundInfo == null) {
+                        mForegroundInfo = new ForegroundInfo();
+                    }
+                    mForegroundInfo.mInsidePadding = a.getBoolean(attr,
+                            mForegroundInfo.mInsidePadding);
+                }
+                break;
+            case R.styleable.View_scrollIndicators:
+                final int scrollIndicators =
+                        (a.getInt(attr, 0) &lt;&lt; SCROLL_INDICATORS_TO_PFLAGS3_LSHIFT)
+                                &amp; SCROLL_INDICATORS_PFLAG3_MASK;
+                if (scrollIndicators != 0) {
+                    mPrivateFlags3 |= scrollIndicators;
+                    initializeScrollIndicators = true;
+                }
+                break;
+            case R.styleable.View_pointerIcon:
+                final int resourceId = a.getResourceId(attr, 0);
+                if (resourceId != 0) {
+                    setPointerIcon(PointerIcon.load(
+                            context.getResources(), resourceId));
+                } else {
+                    final int pointerType = a.getInt(attr, PointerIcon.TYPE_NOT_SPECIFIED);
+                    if (pointerType != PointerIcon.TYPE_NOT_SPECIFIED) {
+                        setPointerIcon(PointerIcon.getSystemIcon(context, pointerType));
+                    }
+                }
+                break;
+            case R.styleable.View_forceHasOverlappingRendering:
+                if (a.peekValue(attr) != null) {
+                    forceHasOverlappingRendering(a.getBoolean(attr, true));
+                }
+                break;
+            case R.styleable.View_tooltipText:
+                setTooltipText(a.getText(attr));
+                break;
+            case R.styleable.View_keyboardNavigationCluster:
+                if (a.peekValue(attr) != null) {
+                    setKeyboardNavigationCluster(a.getBoolean(attr, true));
+                }
+                break;
+            case R.styleable.View_focusedByDefault:
+                if (a.peekValue(attr) != null) {
+                    setFocusedByDefault(a.getBoolean(attr, true));
+                }
+                break;
+            case R.styleable.View_autofillHints:
+                if (a.peekValue(attr) != null) {
+                    CharSequence[] rawHints = null;
+                    String rawString = null;
+
+                    if (a.getType(attr) == TypedValue.TYPE_REFERENCE) {
+                        int resId = a.getResourceId(attr, 0);
+
+                        try {
+                            rawHints = a.getTextArray(attr);
+                        } catch (Resources.NotFoundException e) {
+                            rawString = getResources().getString(resId);
+                        }
+                    } else {
+                        rawString = a.getString(attr);
+                    }
+
+                    if (rawHints == null) {
+                        if (rawString == null) {
+                            throw new IllegalArgumentException(
+                                    &quot;Could not resolve autofillHints&quot;);
+                        } else {
+                            rawHints = rawString.split(&quot;,&quot;);
+                        }
+                    }
+
+                    String[] hints = new String[rawHints.length];
+
+                    int numHints = rawHints.length;
+                    for (int rawHintNum = 0; rawHintNum &lt; numHints; rawHintNum++) {
+                        hints[rawHintNum] = rawHints[rawHintNum].toString().trim();
+                    }
+                    setAutofillHints(hints);
+                }
+                break;
+            case R.styleable.View_importantForAutofill:
+                if (a.peekValue(attr) != null) {
+                    setImportantForAutofill(a.getInt(attr, IMPORTANT_FOR_AUTOFILL_AUTO));
+                }
+                break;
+            case R.styleable.View_defaultFocusHighlightEnabled:
+                if (a.peekValue(attr) != null) {
+                    setDefaultFocusHighlightEnabled(a.getBoolean(attr, true));
+                }
+                break;
+        }
+    }
+
+    setOverScrollMode(overScrollMode);
+
+    // Cache start/end user padding as we cannot fully resolve padding here (we dont have yet
+    // the resolved layout direction). Those cached values will be used later during padding
+    // resolution.
+    mUserPaddingStart = startPadding;
+    mUserPaddingEnd = endPadding;
+
+    if (background != null) {
+        setBackground(background);
+    }
+
+    // setBackground above will record that padding is currently provided by the background.
+    // If we have padding specified via xml, record that here instead and use it.
+    mLeftPaddingDefined = leftPaddingDefined;
+    mRightPaddingDefined = rightPaddingDefined;
+
+    if (padding &gt;= 0) {
+        leftPadding = padding;
+        topPadding = padding;
+        rightPadding = padding;
+        bottomPadding = padding;
+        mUserPaddingLeftInitial = padding;
+        mUserPaddingRightInitial = padding;
+    } else {
+        if (paddingHorizontal &gt;= 0) {
+            leftPadding = paddingHorizontal;
+            rightPadding = paddingHorizontal;
+            mUserPaddingLeftInitial = paddingHorizontal;
+            mUserPaddingRightInitial = paddingHorizontal;
+        }
+        if (paddingVertical &gt;= 0) {
+            topPadding = paddingVertical;
+            bottomPadding = paddingVertical;
+        }
+    }
+
+    if (isRtlCompatibilityMode()) {
+        // RTL compatibility mode: pre Jelly Bean MR1 case OR no RTL support case.
+        // left / right padding are used if defined (meaning here nothing to do). If they are not
+        // defined and start / end padding are defined (e.g. in Frameworks resources), then we use
+        // start / end and resolve them as left / right (layout direction is not taken into account).
+        // Padding from the background drawable is stored at this point in mUserPaddingLeftInitial
+        // and mUserPaddingRightInitial) so drawable padding will be used as ultimate default if
+        // defined.
+        if (!mLeftPaddingDefined &amp;&amp; startPaddingDefined) {
+            leftPadding = startPadding;
+        }
+        mUserPaddingLeftInitial = (leftPadding &gt;= 0) ? leftPadding : mUserPaddingLeftInitial;
+        if (!mRightPaddingDefined &amp;&amp; endPaddingDefined) {
+            rightPadding = endPadding;
+        }
+        mUserPaddingRightInitial = (rightPadding &gt;= 0) ? rightPadding : mUserPaddingRightInitial;
+    } else {
+        // Jelly Bean MR1 and after case: if start/end defined, they will override any left/right
+        // values defined. Otherwise, left /right values are used.
+        // Padding from the background drawable is stored at this point in mUserPaddingLeftInitial
+        // and mUserPaddingRightInitial) so drawable padding will be used as ultimate default if
+        // defined.
+        final boolean hasRelativePadding = startPaddingDefined || endPaddingDefined;
+
+        if (mLeftPaddingDefined &amp;&amp; !hasRelativePadding) {
+            mUserPaddingLeftInitial = leftPadding;
+        }
+        if (mRightPaddingDefined &amp;&amp; !hasRelativePadding) {
+            mUserPaddingRightInitial = rightPadding;
+        }
+    }
+
+    internalSetPadding(
+            mUserPaddingLeftInitial,
+            topPadding &gt;= 0 ? topPadding : mPaddingTop,
+            mUserPaddingRightInitial,
+            bottomPadding &gt;= 0 ? bottomPadding : mPaddingBottom);
+
+    if (viewFlagMasks != 0) {
+        setFlags(viewFlagValues, viewFlagMasks);
+    }
+
+    if (initializeScrollbars) {
+        initializeScrollbarsInternal(a);
+    }
+
+    if (initializeScrollIndicators) {
+        initializeScrollIndicatorsInternal();
+    }
+
+    a.recycle();
+
+    // Needs to be called after mViewFlags is set
+    if (scrollbarStyle != SCROLLBARS_INSIDE_OVERLAY) {
+        recomputePadding();
+    }
+
+    if (x != 0 || y != 0) {
+        scrollTo(x, y);
+    }
+
+    if (transformSet) {
+        setTranslationX(tx);
+        setTranslationY(ty);
+        setTranslationZ(tz);
+        setElevation(elevation);
+        setRotation(rotation);
+        setRotationX(rotationX);
+        setRotationY(rotationY);
+        setScaleX(sx);
+        setScaleY(sy);
+    }
+
+    if (!setScrollContainer &amp;&amp; (viewFlagValues&amp;SCROLLBARS_VERTICAL) != 0) {
+        setScrollContainer(true);
+    }
+
+    computeOpaqueFlags();
+}
+</code></pre><p>总结，View的实例化有两套机制4个方法。当new一个View时，调用第一个构造函数，完成View的基本配置，当然，属性的具体赋值需要代码动态指定。当xml加载View，时，调用第二构造函数，第二构造函数依次逐级调用到第四个构造函数，顶层View的，后面两个参数都是0，代表不查询Them中的属性值和没有指定style布局。当自定义View时，最终调用第四个构造函数，里面先调用第一个View(context),然后theme.obtainStyleAttribute(4p)依次查询属性集里面所有属性在xml,xml指定style,theme指定style和构造函数指定style中的值，然后重新设置，将无法识别的自定义属性的值留给用户处理。用户在自定义View时调用顶View构造函数后便可再次theme.obtainStyleAttribute(2p)查询属性值，自行配置。自定义一般只要写至少两个构造函数，第一个可为XXView(context){super(context)}或者XXView(context){<br>super(context,null)}最终殊途同归，其他构造方法可以按需要的查询属性值使用<br>。</p>
+</div><div><ul class="post-copyright"><li class="post-copyright-author"><strong>本文作者：</strong>hopkin</li><li class="post-copyright-link"><strong>本文链接：</strong><a href="/2018/03/31/自定义View的构造函数/">https://hb-pencil.github.io/2018/03/31/自定义View的构造函数/</a></li><li class="post-copyright-license"><strong>版权声明：</strong>Copyright © 2019 Hopkin</li></ul></div><br><script type="text/javascript" src="/js/share.js?v=0.0.0" async></script><a class="article-share-link" data-url="https://hb-pencil.github.io/2018/03/31/自定义View的构造函数/" data-id="cju9x41ea004acgib8azgop7e" data-qrcode="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAN4AAADeCAAAAAB3DOFrAAACrElEQVR42u3aQY7jMAwEwPn/p3cvexvE6RbFhQ+VU5AJbJUDiJymfn7i159fr+dvPr/Pv5nfd/TCw8PDGy/99+Web/nprwny+frJJ18eAR4eHt4aL9/i56Uifxz5ej5+joeHh/caXt7Nfnoonz65VWDw8PDw3sBLlpVHD8kV8PDw8N7MyyOG/DvPy23x61kLHh4eXsxrm+M3vF+Z7+Hh4eGNp+r5Bp00xFH7e2md/66Mh4eHt8CbHx1oR2VnzfGkQcfDw8O7y5uErZPBVVsSzoZqeHh4eBu8pG3Nm+CzRedjtvx4VtGV4+Hh4Q14+Q0mkUFehPKSUDxiPDw8vDVevn0nW3PbXrcxR9Gs4+Hh4Y15yULbBeWBxTz+qAMIPDw8vDGvDkMHI65nwDx0+PJT4eHh4S3z7m7cefnJi1N9pAAPDw9vgTcZYiW8yWSqLWB4eHh4e7yzJZ6lxUkznY/TooKBh4eHt8DLQ4f5EKuNHvIm+8vneHh4eFd5efRw1mTnW3wbdhQlAQ8PD+8qr80q8gfRFow25C1+Ejw8PLw1XjtMmgQW7fiqjSTw8PDw9njtP/zJRn9roJW38h8bbjw8PLwFXhuznm3lbaCQN+XFaQg8PDy8Nd7kgFT7nfbwwWGcgYeHh7fAmxSJfOiVI+cP+loNxMPDwwti3JXtOFhWW2AOfzE8PDy8Bd58qN9GuvnrsJzg4eHhrfHOmtpkDNaWh7PXl8KAh4eHd4l3tjXnBwjaSDe5b1HG8PDw8BZ4kyNN89u0zfrzezw8PLz/yTtbet7a3r1y/Vjx8PDw1njtQag8up03020UgoeHh/c2Xjvgb6lJ9lyMyvDw8PBexptEwG1QW8Pw8PDwlnl7w6cWf4b5Uhjw8PDwrvJuHatK3j8vJS8M7aEEPDw8vEu8vyIMZOGBayF9AAAAAElFTkSuQmCC">分享</a><div class="tags"></div><div class="post-nav"><a class="pre" href="/2018/04/03/基础算法（三）——二分查找和其他部分常见算法题/">基础算法（三）——二分查找和其他部分常见算法题</a><a class="next" href="/2018/03/27/基础算法（一）——八大排序算法实现Kotlin/">基础算法（一）——八大排序算法实现Kotlin</a></div></div></div></div><div class="pure-u-1-4 hidden_mid_and_down"><div id="sidebar"><div class="widget"><div class="widget-title"><i class="fa fa-folder-o"> 分类</i></div><ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/计算机基础/">计算机基础</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/计算机基础/Android知识/">Android知识</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/计算机基础/数据结构与算法/">数据结构与算法</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/计算机基础/计算机网络/">计算机网络</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/计算机基础/计算机语言/">计算机语言</a></li></ul></li></ul></div><div class="widget"><div class="widget-title"><i class="fa fa-star-o"> 标签</i></div><div class="tagcloud"><a href="/tags/随笔杂文/" style="font-size: 15px;">随笔杂文</a> <a href="/tags/小技巧/" style="font-size: 15px;">小技巧</a> <a href="/tags/经验记录/" style="font-size: 15px;">经验记录</a> <a href="/tags/计算机知识/" style="font-size: 15px;">计算机知识</a> <a href="/tags/他山之石/" style="font-size: 15px;">他山之石</a> <a href="/tags/新技术/" style="font-size: 15px;">新技术</a> <a href="/tags/胡思乱想/" style="font-size: 15px;">胡思乱想</a></div></div><div class="widget"><div class="widget-title"><i class="fa fa-file-o"> 最近文章</i></div><ul class="post-list"><li class="post-list-item"><a class="post-list-link" href="/2019/03/08/Android自定义FlowLayout/">Android自定义FlowLayout</a></li><li class="post-list-item"><a class="post-list-link" href="/2019/01/22/打家劫舍123/">打家劫舍123</a></li><li class="post-list-item"><a class="post-list-link" href="/2019/01/16/N数之和/">N数之和</a></li><li class="post-list-item"><a class="post-list-link" href="/2019/01/10/一些思考和总结/">一些思考和总结</a></li><li class="post-list-item"><a class="post-list-link" href="/2019/01/10/2018年终总结/">2018年终总结</a></li><li class="post-list-item"><a class="post-list-link" href="/2018/12/28/部分高质量文章收藏/">部分高质量文章收藏</a></li><li class="post-list-item"><a class="post-list-link" href="/2018/12/26/Flutter相关文章收藏/">Flutter相关文章收藏</a></li><li class="post-list-item"><a class="post-list-link" href="/2018/10/10/背包问题之回溯和动态规划/">背包问题之回溯和动态规划</a></li><li class="post-list-item"><a class="post-list-link" href="/2018/08/07/Java常见锁的一些总结/">Java常见锁的一些总结</a></li><li class="post-list-item"><a class="post-list-link" href="/2018/08/01/【转】Android状态栏、导航栏、DecorView高度/">【转】Android状态栏、导航栏、DecorView高度</a></li></ul></div></div></div><div class="pure-u-1 pure-u-md-3-4"><div id="footer">Copyright © 2019 <a href="/." rel="nofollow">Hopkin.</a> Powered by<a rel="nofollow" target="_blank" href="https://hexo.io"> Hexo.</a><a rel="nofollow" target="_blank" href="https://github.com/tufu9441/maupassant-hexo"> Theme</a> by<a rel="nofollow" target="_blank" href="https://github.com/pagecho"> Cho.</a></div></div></div><a class="show" id="rocket" href="#top"></a><script type="text/javascript" src="/js/totop.js?v=0.0.0" async></script><script type="text/javascript" src="//lib.baomitu.com/fancybox/3.5.2/jquery.fancybox.min.js" async></script><script type="text/javascript" src="/js/fancybox.js?v=0.0.0" async></script><link rel="stylesheet" type="text/css" href="//lib.baomitu.com/fancybox/3.5.2/jquery.fancybox.min.css"><script type="text/javascript" src="/js/codeblock-resizer.js?v=0.0.0"></script><script type="text/javascript" src="/js/smartresize.js?v=0.0.0"></script></div></body></html>
