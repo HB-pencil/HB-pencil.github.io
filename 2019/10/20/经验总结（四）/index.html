@@ -1,0 +1,99 @@
+<!DOCTYPE html><html lang="zh-CN"><head><meta name="generator" content="Hexo 3.8.0"><meta http-equiv="content-type" content="text/html; charset=utf-8"><meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport"><meta content="yes" name="apple-mobile-web-app-capable"><meta content="black-translucent" name="apple-mobile-web-app-status-bar-style"><meta content="telephone=no" name="format-detection"><meta name="description"><title>经验总结（四） | Hopkin</title><link rel="stylesheet" type="text/css" href="/css/style.css?v=0.0.0"><link rel="stylesheet" type="text/css" href="//lib.baomitu.com/normalize/8.0.1/normalize.min.css"><link rel="stylesheet" type="text/css" href="//lib.baomitu.com/pure/1.0.0/pure-min.css"><link rel="stylesheet" type="text/css" href="//lib.baomitu.com/pure/1.0.0/grids-responsive-min.css"><link rel="stylesheet" href="//lib.baomitu.com/font-awesome/4.7.0/css/font-awesome.min.css"><script type="text/javascript" src="//lib.baomitu.com/jquery/3.3.1/jquery.min.js"></script><link rel="icon" mask="" sizes="any" href="/favicon.ico"><link rel="Shortcut Icon" type="image/x-icon" href="/favicon.ico"><link rel="apple-touch-icon" href="/apple-touch-icon.png"><link rel="apple-touch-icon-precomposed" href="/apple-touch-icon.png"></head><body><div class="body_container"><div id="header"><div class="site-name"><h1 class="hidden">经验总结（四）</h1><a id="logo" href="/.">Hopkin</a><p class="description">一个普通程序员的碎碎念 (。・∀・)ノ</p></div><div id="nav-menu"><a class="current" href="/."><i class="fa fa-home"> 首页</i></a><a href="/archives/"><i class="fa fa-archive"> 归档</i></a><a href="/about/"><i class="fa fa-user"> 关于</i></a></div></div><div class="pure-g" id="layout"><div class="pure-u-1 pure-u-md-3-4"><div class="content_container"><div class="post"><h1 class="post-title">经验总结（四）</h1><div class="post-meta">Oct 20, 2019<span> | </span><span class="category"><a href="/categories/计算机基础/">计算机基础</a><a href="/categories/计算机基础/Android知识/">Android知识</a></span></div><div class="post-content"><p>System.currentTimeMillis() 返回的时间戳收时区影响。使用SystemClock</p>
+<h3 id="RecyclerView四级缓存"><a href="#RecyclerView四级缓存" class="headerlink" title="RecyclerView四级缓存"></a>RecyclerView四级缓存</h3><p>一：scrap(屏幕存在的，抖动时放入)、changedScrap(发生变化的item change)</p>
+<p>二：cache</p>
+<p>三：exetension（未使用）</p>
+<p>四：pool（可共享）</p>
+<p>notifyDataSetChanged 全部会移入第四级缓存（容量有限，需要全部绑定数据）</p>
+<p>notifyItemChanged 会分别移入srcap和changeScrap中（容量无限，大部分不用绑定数据）</p>
+<p>抖动移入scrap（直接复用）</p>
+<p>简言之，一二级缓存holder基本完全复用（除了change），四级缓存需要onBinderViewHolder</p>
+<p>一级缓存用来存放屏幕上抖动的holder或者数据改变了的hodler</p>
+<p><em>参考文章：</em></p>
+<p><a href="https://juejin.im/post/5b79a0b851882542b13d204b" target="_blank" rel="noopener">RecyclerView缓存原理，有图有真相</a></p>
+<p><a href="https://www.imooc.com/article/279013?block_id=tuijian_wz" target="_blank" rel="noopener">RecyclerView 源码分析(三) - RecyclerView的缓存机制</a></p>
+<p><a href="https://zhuanlan.zhihu.com/p/80475040" target="_blank" rel="noopener">真正带你搞懂 RecyclerView 的缓存机制，再也不怕面试被虐了</a></p>
+<h3 id="IntentFilter"><a href="#IntentFilter" class="headerlink" title="IntentFilter"></a>IntentFilter</h3><ul>
+<li><p><strong>Scheme</strong>：URI的模式。如果URI中没有指定Scheme.那么整个URI无效。默认值为content 和 file。</p>
+</li>
+<li><p><strong>Host</strong>：URI的host。比如<a href="http://www.axe.com。如果指定了scheme和port，path等其他参数，但是host未指定，那么整个URI无效；如果只指定了scheme，有指定host和其他参数URI是有效的。可以这样理解：一个完整的URI" target="_blank" rel="noopener">www.axe.com。如果指定了scheme和port，path等其他参数，但是host未指定，那么整个URI无效；如果只指定了scheme，有指定host和其他参数URI是有效的。可以这样理解：一个完整的URI</a> ：<a href="http://www.axe.com:500/profile/inf…" target="_blank" rel="noopener">www.axe.com:500/profile/inf…</a> 我将后面的prot 和path“:500/profile/info ”去掉，这个URI任然有效。如果我单独将<a href="http://www.axe.com" target="_blank" rel="noopener">www.axe.com</a> 那这个URI就无效了。</p>
+</li>
+<li><p><strong>Port</strong>：URI端口，当URI指定了scheme 和 host 参数时port参数才有意义。</p>
+</li>
+<li><p><strong>path</strong>：用来匹配完整的路径，如：example.com/blog/abc.ht…，这里将 path 设置为 /blog/abc.html 才能够进行匹配；</p>
+</li>
+<li><p><strong>pathPrefix</strong>： 用来匹配路径的开头部分，拿上面的 Uri 来说，这里将 pathPrefix 设置为 /blog 就能进行匹配了；</p>
+</li>
+<li><p><strong>pathPattern</strong>： 用表达式来匹配整个路径</p>
+</li>
+</ul>
+<p><em>data的scheme host自动小写，在web里面统一是小写</em></p>
+<h3 id="字节码与重写、重载"><a href="#字节码与重写、重载" class="headerlink" title="字节码与重写、重载"></a>字节码与重写、重载</h3><p><a href="https://yq.aliyun.com/articles/58250" target="_blank" rel="noopener">从字节码看重载重写</a></p>
+<p><strong>Fragment 返回栈为空时是空白页，如果第一个fragment也显性加入返回栈的话</strong></p>
+<ul>
+<li><p>APT 一种注解处理框架，作用于源码未编译阶段  </p>
+</li>
+<li><p>Aspjectj  代码织入框架 ，作用于源码编译成class的阶段</p>
+</li>
+<li><p>Javassist 字节码修改框架，作用于class编译后的阶段，合成dex之前</p>
+</li>
+<li><p>JavaAope Java代码生成框架，常和Apt结合使用，作用于源码阶段</p>
+</li>
+</ul>
+<p>gradle tranform会转变为一个task，并且在生成dex之前执行，可以在此修改class文件，并且对应的task使用隐式依赖，一个transform的输出作为另一个transform的输入，混淆、生成dex等都是一个个transform，自定义的transform是最先执行的</p>
+<ul>
+<li>dependsOn - sets task dependencies. Executing b here would require that a be executed first.</li>
+<li>mustRunAfter - sets task ordering. Executing d does not require c. But, when both c and d are included, c will execute before d.</li>
+</ul>
+<p>也就是说，dependsOn取决于task必须在该task前执行，没有顺序要求</p>
+<p>mustrunAfter前面的task要么不执行，要么在它执行之后立刻执行，强调顺序</p>
+<h3 id="clipChildren-clipToPadding"><a href="#clipChildren-clipToPadding" class="headerlink" title="clipChildren  clipToPadding"></a>clipChildren  clipToPadding</h3><ul>
+<li><p>clipChildren用来定义他的子控件是否要在他应有的边界内进行绘制。 默认情况下，clipChildren被设置为true。 也就是不允许进行扩展绘制。</p>
+</li>
+<li><p>clipToPadding用来定义ViewGroup是否允许在padding中绘制。默认情况下，cliptopadding被设置为ture， 也就是把padding中的值都进行裁切了。</p>
+</li>
+</ul>
+<h4 id="clipToPadding"><a href="#clipToPadding" class="headerlink" title="clipToPadding"></a>clipToPadding</h4><p>该属性很适合的应用场景: 设置RecyclerView的第一个(最后一个)Item距离屏幕TOP(BOTTOM)有一段距离的情况</p>
+<p>有的需求场景是我们需要给列表上下留空，但是滑动的时候又要滑动到留空的区域，如果我们只是给RecyclerView设置了paddingTop和paddingBottom ，那么我们可以发现在滑动RecyclerView的过程</p>
+<p>中这个padding当然是存在的.在padding部分是看不到RecyclerView的item的,本质上是因为在这两部分没有绘制我们的RecyclerView。</p>
+<p>假若我们此时为RecyclerView设置属性android:clipToPadding=”false”,同样再滑动RecyclerView此时可以</p>
+<p>发现在RecyclerView的头部以上和尾部以下都占有padding部分，但是滑动依然可以显示我们的RecyclerView的 item。</p>
+<h4 id="clipChildren"><a href="#clipChildren" class="headerlink" title="clipChildren"></a>clipChildren</h4><p>该属性很适合的应用场景: 某元素超出父View控件，或者是放大的动画效果时。</p>
+<p>clipChildren的设置应该放在它爷爷节点的下面。</p>
+<p>很多人都反馈设置了属性不生效就是这一点原因，如果在没有爷爷节点的情况下设置在根节点，View就会显示超出屏幕。</p>
+<h3 id="Other"><a href="#Other" class="headerlink" title="Other"></a>Other</h3><ul>
+<li><p><a href="https://juejin.im/post/5c6c20556fb9a04a0e2dc490" target="_blank" rel="noopener">Xfermode</a></p>
+</li>
+<li><p><a href="https://mp.weixin.qq.com/s/HpMu_QI_N-J18fNJG96yzA" target="_blank" rel="noopener">线程池</a></p>
+</li>
+</ul>
+<h3 id="约束布局"><a href="#约束布局" class="headerlink" title="约束布局"></a>约束布局</h3><ul>
+<li><p><a href="https://juejin.im/post/5ae869306fb9a07a9d70201f" target="_blank" rel="noopener">ConstraintLayout使用指南</a></p>
+</li>
+<li><p><a href="https://juejin.im/post/5a1d9ba66fb9a044fb07819e" target="_blank" rel="noopener">ConstraintLayou</a></p>
+</li>
+<li><p><a href="https://developer.android.com/reference/android/support/constraint/ConstraintLayout" target="_blank" rel="noopener">ConstraintLayou</a> </p>
+</li>
+</ul>
+<h2 id="代码混淆"><a href="#代码混淆" class="headerlink" title="代码混淆"></a>代码混淆</h2><ul>
+<li>1，jni方法不可混淆，因为这个方法需要和native方法保持一致；</li>
+</ul>
+<p>-keepclasseswithmembernames class * { # 保持native方法不被混淆 native <methods>; }</methods></p>
+<ul>
+<li><p>2，反射用到的类不混淆(否则反射可能出现问题)；</p>
+</li>
+<li><p>3，AndroidMainfest中的类不混淆，所以四大组件和Application的子类和Framework层下所有的类默认不会进行混淆。自定义的View默认也不会被混淆；所以像网上贴的很多排除自定义View，或四大组件被混淆的规则在Android Studio中是无需加入的；</p>
+</li>
+<li><p>4，与服务端交互时，使用GSON、fastjson等框架解析服务端数据时，所写的JSON对象类不混淆，否则无法将JSON解析成对应的对象；</p>
+</li>
+<li><p>5，使用第三方开源库或者引用其他第三方的SDK包时，如果有特别要求，也需要在混淆文件中加入对应的混淆规则；</p>
+</li>
+<li><p>6，有用到WebView的JS调用也需要保证写的接口方法不混淆，原因和第一条一样；</p>
+</li>
+<li><p>7，Parcelable的子类和Creator静态成员变量不混淆，否则会产生Android.os.BadParcelableException异常；</p>
+</li>
+</ul>
+<p>-keep class <em> implements Android.os.Parcelable { # 保持Parcelable不被混淆 public static final Android.os.Parcelable$Creator </em>; }</p>
+<ul>
+<li>8，使用enum类型时需要注意避免以下两个方法混淆，因为enum类的特殊性，以下两个方法会被反射调用，见第二条规则。<br> -keepclassmembers enum * { public static <strong>[] values(); public static </strong> valueOf(java.lang.String); }</li>
+</ul>
+</div><div><ul class="post-copyright"><li class="post-copyright-author"><strong>本文作者：</strong>hopkin</li><li class="post-copyright-link"><strong>本文链接：</strong><a href="/2019/10/20/经验总结（四）/">https://hb-pencil.github.io/2019/10/20/经验总结（四）/</a></li><li class="post-copyright-license"><strong>版权声明：</strong>Copyright © 2019 Hopkin</li></ul></div><br><script type="text/javascript" src="/js/share.js?v=0.0.0" async></script><a class="article-share-link" data-url="https://hb-pencil.github.io/2019/10/20/经验总结（四）/" data-id="ck1yl5hzr0000p8ib3p6w14zg" data-qrcode="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAMYAAADGCAAAAACs8KCBAAACJklEQVR42u3aS27DMAxFUe9/0+60BWr3PlIpIOpqFCSOo+MCLD+6Lrzub6vz/vs15FutJUOGjG0Z9+vqbJfc+enK9A4yZMg4gfG0CfI6ZaeP731vMmTIkPF+TYrpvJYhQ4aMlMHTOJ4yypAhQ8Y7I711LR2sPb7FtbgMGTI2ZPCu+/+//sh8Q4YMGVsx7nDx1ls6yGztSoYMGaMZPMCRkjVNENOU8Y/RqQwZMg5m8IBI2LxkTWEyZMiYyuBpHPl0VQHMv/sjw5UhQ8YBjE4ZWXscfNhZ/I8hQ4aMEYy148nOgTC+3ccrZciQMZqRNtT4GKAzGOCJqQwZMk5gpEfBOmllvyX3+L4MGTKGMlZt6/0+ZLskKAddQxkyZAxi8PyKfMrL4LQkXpYmypAhY0NGLZim5Ws64IyPlMmQIWM0I90ov74fxEk4/uVvIkOGjHGMTlFaa66R8vjCS4YMGScz+mPOzjGLtHknQ4aM2YzaETEeCsnio0rSjJMhQ8ZUBj/iwEtNzuaDSdQ7lCFDxjEMXtDWgmNn/ClDhoyTGWmLrXOyo59uLnh+MmTI2IRxh4undGloTlt4MmTIOIfRCXY8gUvHlp2hggwZMqYySJDttM9q6SZ/KDJkyDiHwTeUlqm1+6cJpQwZMmTwsSIPryTE86GCDBkyZPDyNf75UhK5IODKkCFjQ0Y//PGhAh+gfqTdJkOGjA0ZaRONpIA8KHfKXRkyZBzA+AITrCLgRajcqgAAAABJRU5ErkJggg==">分享</a><div class="tags"><a href="/tags/小技巧/">小技巧</a><a href="/tags/经验总结/">经验总结</a></div><div class="post-nav"><a class="next" href="/2019/09/08/经验总结（三）/">经验总结（三）</a></div></div></div></div><div class="pure-u-1-4 hidden_mid_and_down"><div id="sidebar"><div class="widget"><div class="widget-title"><i class="fa fa-folder-o"> 分类</i></div><ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/计算机基础/">计算机基础</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/计算机基础/Android知识/">Android知识</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/计算机基础/数据结构与算法/">数据结构与算法</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/计算机基础/计算机网络/">计算机网络</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/计算机基础/计算机语言/">计算机语言</a></li></ul></li></ul></div><div class="widget"><div class="widget-title"><i class="fa fa-star-o"> 标签</i></div><div class="tagcloud"><a href="/tags/随笔杂文/" style="font-size: 15px;">随笔杂文</a> <a href="/tags/经验记录/" style="font-size: 15px;">经验记录</a> <a href="/tags/小技巧/" style="font-size: 15px;">小技巧</a> <a href="/tags/计算机知识/" style="font-size: 15px;">计算机知识</a> <a href="/tags/他山之石/" style="font-size: 15px;">他山之石</a> <a href="/tags/新技术/" style="font-size: 15px;">新技术</a> <a href="/tags/经验总结/" style="font-size: 15px;">经验总结</a> <a href="/tags/胡思乱想/" style="font-size: 15px;">胡思乱想</a></div></div><div class="widget"><div class="widget-title"><i class="fa fa-file-o"> 最近文章</i></div><ul class="post-list"><li class="post-list-item"><a class="post-list-link" href="/2019/10/20/经验总结（四）/">经验总结（四）</a></li><li class="post-list-item"><a class="post-list-link" href="/2019/09/08/经验总结（三）/">经验总结（三）</a></li><li class="post-list-item"><a class="post-list-link" href="/2019/08/25/事件总线思想简述/">事件总线思想简述</a></li><li class="post-list-item"><a class="post-list-link" href="/2019/08/24/经验总结（二）/">经验总结（二）</a></li><li class="post-list-item"><a class="post-list-link" href="/2019/08/11/经验总结（一）/">经验总结（一）</a></li><li class="post-list-item"><a class="post-list-link" href="/2019/06/12/工作业余计划/">工作业余计划</a></li><li class="post-list-item"><a class="post-list-link" href="/2019/03/08/Android自定义FlowLayout/">Android自定义FlowLayout</a></li><li class="post-list-item"><a class="post-list-link" href="/2019/01/22/打家劫舍123/">打家劫舍123</a></li><li class="post-list-item"><a class="post-list-link" href="/2019/01/16/N数之和/">N数之和</a></li><li class="post-list-item"><a class="post-list-link" href="/2019/01/10/2018年终总结/">2018年终总结</a></li></ul></div></div></div><div class="pure-u-1 pure-u-md-3-4"><div id="footer">Copyright © 2019 <a href="/." rel="nofollow">Hopkin.</a> Powered by<a rel="nofollow" target="_blank" href="https://hexo.io"> Hexo.</a><a rel="nofollow" target="_blank" href="https://github.com/tufu9441/maupassant-hexo"> Theme</a> by<a rel="nofollow" target="_blank" href="https://github.com/pagecho"> Cho.</a></div></div></div><a class="show" id="rocket" href="#top"></a><script type="text/javascript" src="/js/totop.js?v=0.0.0" async></script><script type="text/javascript" src="//lib.baomitu.com/fancybox/3.5.2/jquery.fancybox.min.js" async></script><script type="text/javascript" src="/js/fancybox.js?v=0.0.0" async></script><link rel="stylesheet" type="text/css" href="//lib.baomitu.com/fancybox/3.5.2/jquery.fancybox.min.css"><script type="text/javascript" src="/js/codeblock-resizer.js?v=0.0.0"></script><script type="text/javascript" src="/js/smartresize.js?v=0.0.0"></script></div></body></html>
