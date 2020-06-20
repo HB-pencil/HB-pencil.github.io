@@ -1,0 +1,71 @@
+<!DOCTYPE html><html lang="zh-CN"><head><meta name="generator" content="Hexo 3.8.0"><meta http-equiv="content-type" content="text/html; charset=utf-8"><meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport"><meta content="yes" name="apple-mobile-web-app-capable"><meta content="black-translucent" name="apple-mobile-web-app-status-bar-style"><meta content="telephone=no" name="format-detection"><meta name="description"><title>经验总结（五） | Hopkin</title><link rel="stylesheet" type="text/css" href="/css/style.css?v=0.0.0"><link rel="stylesheet" type="text/css" href="//lib.baomitu.com/normalize/8.0.1/normalize.min.css"><link rel="stylesheet" type="text/css" href="//lib.baomitu.com/pure/1.0.0/pure-min.css"><link rel="stylesheet" type="text/css" href="//lib.baomitu.com/pure/1.0.0/grids-responsive-min.css"><link rel="stylesheet" href="//lib.baomitu.com/font-awesome/4.7.0/css/font-awesome.min.css"><script type="text/javascript" src="//lib.baomitu.com/jquery/3.3.1/jquery.min.js"></script><link rel="icon" mask="" sizes="any" href="/favicon.ico"><link rel="Shortcut Icon" type="image/x-icon" href="/favicon.ico"><link rel="apple-touch-icon" href="/apple-touch-icon.png"><link rel="apple-touch-icon-precomposed" href="/apple-touch-icon.png"></head><body><div class="body_container"><div id="header"><div class="site-name"><h1 class="hidden">经验总结（五）</h1><a id="logo" href="/.">Hopkin</a><p class="description">一个普通程序员的碎碎念 (。・∀・)ノ</p></div><div id="nav-menu"><a class="current" href="/."><i class="fa fa-home"> 首页</i></a><a href="/archives/"><i class="fa fa-archive"> 归档</i></a><a href="/about/"><i class="fa fa-user"> 关于</i></a></div></div><div class="pure-g" id="layout"><div class="pure-u-1 pure-u-md-3-4"><div class="content_container"><div class="post"><h1 class="post-title">经验总结（五）</h1><div class="post-meta">Jan 4, 2020<span> | </span><span class="category"><a href="/categories/计算机基础/">计算机基础</a><a href="/categories/计算机基础/Android知识/">Android知识</a></span></div><div class="post-content"><h1 id="经验总结（五）"><a href="#经验总结（五）" class="headerlink" title="经验总结（五）"></a>经验总结（五）</h1><p><strong>DrawerLayout</strong></p>
+<ul>
+<li>主要内容的视图(FrameLayout)必须是DrawLayout的第一个子节点, 因为导航抽屉是在主要内容视图的上面。</li>
+<li>主要内容视图的layout_width layout_height均设置为match_parent，因为当导航抽屉隐藏时，它填充了整个界面。</li>
+<li>抽屉视图(ListView)必须指定其水平重力（android:layout_gravity）属性。如果指定为左菜单时，值为left，右菜单为right。然而不过要跟随系统语言方向（比如系统文字是从做到右，或者从右到左）用start。</li>
+<li>抽屉视图用dp单位来指定其宽度，并且高度匹配父视图。抽屉的宽度不能超过320 dp, 因此用户总是可以看到主要内容视图的一部分。</li>
+</ul>
+<p><strong>屏幕绘制的原理</strong></p>
+<p><a href="https://juejin.im/entry/59fd739b6fb9a044fd112121" target="_blank" rel="noopener">你真的了解过度绘制吗？</a></p>
+<p><strong>Kotlin return</strong></p>
+<p>Just use the qualified return syntax: return@fetchUpcomingTrips.</p>
+<p>In Kotlin, return inside a lambda means return from the innermost nesting fun (ignoring lambdas), and it is not allowed in lambdas that are not <a href="https://kotlinlang.org/docs/reference/inline-functions.html" target="_blank" rel="noopener">inlined</a>.</p>
+<p>The return@label syntax is used to specify the scope to return from. You can use the name of the function the lambda is passed to (fetchUpcomingTrips) as the label:</p>
+<ul>
+<li>内联函数，实际上是牺牲空间换取时间，相当于把被调用者的函数体copy过来，运行少了寻址，但是多了代码。所以，切忌过渡使用。</li>
+</ul>
+<p>Gradle task </p>
+<ul>
+<li><p>隐式依赖的输入输出：输入可以是任意数据类型，输出只能是file类型</p>
+</li>
+<li><p>Build:打包并执行所有测试单元</p>
+</li>
+<li><p>Assemble:打包</p>
+</li>
+<li>Gradle task创建传入的主要参数：name、type(T extends Task)、Action<t>(接口)，该闭包对应的java代码为<t extend="" task=""> 作为参数的闭包，java8写成 T -&gt; { T.setSource() }，groovy为 { setSource “”}，虽然闭包是closure，但是task用的多的是action闭包</t></t></li>
+</ul>
+<p>关于闭包：<a href="https://juejin.im/post/5c4af28be51d4511dc72fcca" target="_blank" rel="noopener">Gradle中的闭包</a></p>
+<ul>
+<li><p>闭包的 this ， owner ，delegate 一般是相同对象，</p>
+</li>
+<li><p>在闭包中的闭包，this为闭包的最外部class，owner = delegate为外层的闭包</p>
+</li>
+</ul>
+<p>用String.matches匹配的正则，会在正则表达式前后加上^ $，是匹配整个大字符串是否满足正则表达式</p>
+<ul>
+<li><p>windowSoftInputMode=”adjustPan” 向上滑动</p>
+</li>
+<li><p>windowSoftInputMode=”adjustResize” 重新绘制，挡住可手动滑动（前提是可页面滑动View）</p>
+</li>
+</ul>
+<ul>
+<li>策略模式，策略的更改完全取决于客户</li>
+<li>状态模式，状态的流转切换是固定的，由系统决定</li>
+</ul>
+<p>View的属性和值</p>
+<p><a href="https://juejin.im/post/5ae9cc5c6fb9a07ac0221086" target="_blank" rel="noopener">看完后彻底搞清楚Android中的 Attr 、 Style 、Theme</a></p>
+<p>总结</p>
+<ul>
+<li>View的属性都要在xml文件中定义，即在<declare-styleable>中定义<attr>，子View继承父View定义的属性</attr></declare-styleable></li>
+<li>自定义View也是相似的，需要在xml中定义属性</li>
+<li>View加载时，首先取用户直接的赋值，其次取style中属性的赋值，最后去theme中的兜底赋值，若没有值加载时会抛异常，加载到attrset</li>
+<li>从attrSet中通过context/theme.<strong>obtainStyledAttributes</strong>获取typeArray, </li>
+</ul>
+<p>发布aar的方式</p>
+<ul>
+<li>发布到jcenter() ，publish</li>
+<li>发布到maven，尤其是内网，使用mavenDeployer，发布自动生成pom管理文件，可通过pom.withXml修改文件依赖，pom文件会自动根据该module配置文件导入模块间的依赖，若未指定配置是   <em>模块名:artificatId::unspecified</em>， 需要修改在uploadTask中pom文件内容</li>
+<li>gradle.property作为project对象的一个额外属性，可获取本module的属性，当不存时，向父目录寻找</li>
+<li>android gradle代码都在build脚本定义，可抽取出来</li>
+</ul>
+<p>若没有设置 <strong>WebViewClient</strong> 则由系统（<strong>Activity Manager</strong>）处理该 <strong>url</strong>，通常是使用浏览器打开或弹出浏览器选择对话框。</p>
+<p>若设置 <strong>WebViewClient</strong> 且该方法返回 <strong>true</strong> ，则说明由应用的代码处理该 <strong>url</strong>，<strong>WebView</strong> 不处理，也就是程序员自己做处理。</p>
+<p>若设置 <strong>WebViewClient</strong> 且该方法返回 <strong>false</strong>，则说明由 <strong>WebView</strong> 处理该 <strong>url</strong>，即用 <strong>WebView</strong> 加载该 <strong>url</strong>。</p>
+<p>WebView的前进、后退、刷新、以及post请求都不会调用shouldOverrideUrlLoading方法，除去以上行为，还得满足（ ! isLoadUrl || isRedirect） 即 （不是通过webView.loadUrl来加载的 或者 是重定向） 这个条件，才会调用shouldOverrideUrlLoading方法。</p>
+<ul>
+<li><p>Fragment 被commit的时候，也是通过主线程的消息机制</p>
+</li>
+<li><p><strong>onSaveInstanceState</strong> ，Activity异常终止时候调用</p>
+</li>
+</ul>
+</div><div><ul class="post-copyright"><li class="post-copyright-author"><strong>本文作者：</strong>hopkin</li><li class="post-copyright-link"><strong>本文链接：</strong><a href="/2020/01/04/经验总结（五）/">https://hb-pencil.github.io/2020/01/04/经验总结（五）/</a></li><li class="post-copyright-license"><strong>版权声明：</strong>Copyright © 2019 Hopkin</li></ul></div><br><script type="text/javascript" src="/js/share.js?v=0.0.0" async></script><a class="article-share-link" data-url="https://hb-pencil.github.io/2020/01/04/经验总结（五）/" data-id="ckbnd9pke002tjwibjg4tdt0n" data-qrcode="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAMYAAADGCAAAAACs8KCBAAACLUlEQVR42u3aQW7DMAwEQP//0+m1QFt3l0oOlsanIHBtjQowFMnriq9XcH2/M3na/VuuT1wYGBiPZcwWN/smof587/3aMDAwzmG0j7t/TRIV77ey3ggMDAyMUSCehWwMDAyMFcYsOOYn0ASPgYFxMiM5xCaJYF5KW0k9MTAwTmO8KyB+4vNH+hsYGBiPYrwWrhkyKbTVK8HAwNiaMVvErFXZluHu08Rf/hYDA2NrRp5xJaFz1kjIG5/1IRYDA2MLRiLLA19etpttSt3fwMDAeDhjJaVbCdCz5C86vmJgYGzHyKNy3lbMxyNWjrJ/hl0MDIztGEkRrT2CrjcG2sQUAwNjb8asTBY9tNyO4fkbAwPjYMbK4bMlJeAiw8XAwNiU0UawtqnQNgByGAYGxgmMNrzOivj5IbZtOVyzXwkMDIxHMdbLanmy2G5KO16GgYGxNyNJ/u5TupUSXv7k4n+CgYGxEaNtKLaJ3XoiWHRiMTAwtmbkobMtz81+AdqSHAYGxt6MPI1r71xJN+sOBgYGxtaMvECWL6stnLVBtmhhYmBgbMFopzBWimXvSj3/mW7DwMDYjvEqr1mh7V1ty6jchoGBsR2jDYuzZLENr0kZDgMD4zRGO7bVlufWj8RRqMXAwDiA0Qa+lTGvYnFxKMfAwMBoQ2q+BfkhNkoNMTAwjmfM7mkxw3IbBgbGAYz80bOWZD5qNhvCwMDA2JvRjkS0Yxl5y/MTwxwYGBgPZ3wBqtMd8+BpL4wAAAAASUVORK5CYII=">分享</a><div class="tags"><a href="/tags/小技巧/">小技巧</a><a href="/tags/零碎知识/">零碎知识</a><a href="/tags/经验总结/">经验总结</a></div><div class="post-nav"><a class="pre" href="/2020/01/12/Binder IPC/">Binder &amp; TCP</a><a class="next" href="/2020/01/04/经验总结（六）/">经验总结（六）</a></div></div></div></div><div class="pure-u-1-4 hidden_mid_and_down"><div id="sidebar"><div class="widget"><div class="widget-title"><i class="fa fa-folder-o"> 分类</i></div><ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/计算机基础/">计算机基础</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/计算机基础/Android基础/">Android基础</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/计算机基础/Android知识/">Android知识</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/计算机基础/数据结构与算法/">数据结构与算法</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/计算机基础/计算机网络/">计算机网络</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/计算机基础/计算机语言/">计算机语言</a></li></ul></li></ul></div><div class="widget"><div class="widget-title"><i class="fa fa-star-o"> 标签</i></div><div class="tagcloud"><a href="/tags/随笔杂文/" style="font-size: 15px;">随笔杂文</a> <a href="/tags/经验记录/" style="font-size: 15px;">经验记录</a> <a href="/tags/小技巧/" style="font-size: 15px;">小技巧</a> <a href="/tags/计算机知识/" style="font-size: 15px;">计算机知识</a> <a href="/tags/零碎知识/" style="font-size: 15px;">零碎知识</a> <a href="/tags/他山之石/" style="font-size: 15px;">他山之石</a> <a href="/tags/新技术/" style="font-size: 15px;">新技术</a> <a href="/tags/胡思乱想/" style="font-size: 15px;">胡思乱想</a> <a href="/tags/经验总结/" style="font-size: 15px;">经验总结</a> <a href="/tags/kotlin/" style="font-size: 15px;">kotlin</a></div></div><div class="widget"><div class="widget-title"><i class="fa fa-file-o"> 最近文章</i></div><ul class="post-list"><li class="post-list-item"><a class="post-list-link" href="/2020/03/22/SharePreferences原理浅析/">SharePreferences原理浅析</a></li><li class="post-list-item"><a class="post-list-link" href="/2020/01/12/Binder IPC/">Binder & TCP</a></li><li class="post-list-item"><a class="post-list-link" href="/2020/01/04/经验总结（五）/">经验总结（五）</a></li><li class="post-list-item"><a class="post-list-link" href="/2020/01/04/经验总结（六）/">经验总结（六）</a></li><li class="post-list-item"><a class="post-list-link" href="/2019/11/23/Activity的启动过程浅析/">Activity的启动过程浅析</a></li><li class="post-list-item"><a class="post-list-link" href="/2019/11/22/kotlin的若干特性/">Kotln的若干特性</a></li><li class="post-list-item"><a class="post-list-link" href="/2019/10/20/经验总结（四）/">经验总结（四）</a></li><li class="post-list-item"><a class="post-list-link" href="/2019/09/08/经验总结（三）/">经验总结（三）</a></li><li class="post-list-item"><a class="post-list-link" href="/2019/08/25/事件总线思想简述/">事件总线思想简述</a></li><li class="post-list-item"><a class="post-list-link" href="/2019/08/24/经验总结（二）/">经验总结（二）</a></li></ul></div></div></div><div class="pure-u-1 pure-u-md-3-4"><div id="footer">Copyright © 2020 <a href="/." rel="nofollow">Hopkin.</a> Powered by<a rel="nofollow" target="_blank" href="https://hexo.io"> Hexo.</a><a rel="nofollow" target="_blank" href="https://github.com/tufu9441/maupassant-hexo"> Theme</a> by<a rel="nofollow" target="_blank" href="https://github.com/pagecho"> Cho.</a></div></div></div><a class="show" id="rocket" href="#top"></a><script type="text/javascript" src="/js/totop.js?v=0.0.0" async></script><script type="text/javascript" src="//lib.baomitu.com/fancybox/3.5.2/jquery.fancybox.min.js" async></script><script type="text/javascript" src="/js/fancybox.js?v=0.0.0" async></script><link rel="stylesheet" type="text/css" href="//lib.baomitu.com/fancybox/3.5.2/jquery.fancybox.min.css"><script type="text/javascript" src="/js/codeblock-resizer.js?v=0.0.0"></script><script type="text/javascript" src="/js/smartresize.js?v=0.0.0"></script></div></body></html>
