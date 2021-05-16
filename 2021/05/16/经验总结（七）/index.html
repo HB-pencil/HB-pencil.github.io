@@ -1,0 +1,85 @@
+<!DOCTYPE html><html lang="zh-CN"><head><meta name="generator" content="Hexo 3.8.0"><meta http-equiv="content-type" content="text/html; charset=utf-8"><meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport"><meta content="yes" name="apple-mobile-web-app-capable"><meta content="black-translucent" name="apple-mobile-web-app-status-bar-style"><meta content="telephone=no" name="format-detection"><meta name="description"><title>经验总结（七） | Hopkin</title><link rel="stylesheet" type="text/css" href="/css/style.css?v=0.0.0"><link rel="stylesheet" type="text/css" href="//lib.baomitu.com/normalize/8.0.1/normalize.min.css"><link rel="stylesheet" type="text/css" href="//lib.baomitu.com/pure/1.0.0/pure-min.css"><link rel="stylesheet" type="text/css" href="//lib.baomitu.com/pure/1.0.0/grids-responsive-min.css"><link rel="stylesheet" href="//lib.baomitu.com/font-awesome/4.7.0/css/font-awesome.min.css"><script type="text/javascript" src="//lib.baomitu.com/jquery/3.3.1/jquery.min.js"></script><link rel="icon" mask="" sizes="any" href="/favicon.ico"><link rel="Shortcut Icon" type="image/x-icon" href="/favicon.ico"><link rel="apple-touch-icon" href="/apple-touch-icon.png"><link rel="apple-touch-icon-precomposed" href="/apple-touch-icon.png"></head><body><div class="body_container"><div id="header"><div class="site-name"><h1 class="hidden">经验总结（七）</h1><a id="logo" href="/.">Hopkin</a><p class="description">一个普通程序员的碎碎念 (。・∀・)ノ</p></div><div id="nav-menu"><a class="current" href="/."><i class="fa fa-home"> 首页</i></a><a href="/archives/"><i class="fa fa-archive"> 归档</i></a><a href="/about/"><i class="fa fa-user"> 关于</i></a></div></div><div class="pure-g" id="layout"><div class="pure-u-1 pure-u-md-3-4"><div class="content_container"><div class="post"><h1 class="post-title">经验总结（七）</h1><div class="post-meta">May 16, 2021<span> | </span><span class="category"><a href="/categories/计算机基础/">计算机基础</a><a href="/categories/计算机基础/Android知识/">Android知识</a></span></div><div class="post-content"><p>Fragment</p>
+<ul>
+<li>Commit 可能出现异常，因为如果在onSaveInstanceState之后调用，状态会丢失，所以抛异常，如果使用commitAllowStateLoss的话不会抛异常，但是提交会失效，onSaveInstanceState一般会在Activity可能被杀死的情况调用，比如退到后台，屏幕旋转等，杀死了后续进入会尝试恢复</li>
+<li>commitNow和addToBackStack不能一起使用</li>
+</ul>
+<p>###插件化：###</p>
+<p>1.类加载问题，合并dex使用一个classloader；或者每个插件都使用自己的classloader</p>
+<p>2.资源访问，合并资源，或者每个插件都使用自己的resources(无法范围宿主)</p>
+<p>3.四大组件，组件预埋，hook系统message，绕过系统校验</p>
+<p>无论是Context.getResources还是Context.getAssets ，最终都是调用到ResourcesImpl里面的mAsset</p>
+<p>Context -&gt; ContextImpl.mResources -&gt; ResourcesImpl.mAsset (通常插件化反射addAssetPath后还需要构造新的resources对context进行替换，这是因为原来的resources在assets变了之后也需要发生变化) </p>
+<p>###XferMode 快速查询###</p>
+<p><a href="https://www.jianshu.com/p/d11892bbe055" target="_blank" rel="noopener">https://www.jianshu.com/p/d11892bbe055</a></p>
+<p>###关于SurfaceView、Canvas、Bitmap###</p>
+<p>(StackOverflow)</p>
+<p>Here are some definitions:</p>
+<ul>
+<li>A Surface is an object holding pixels that are being composited to the screen. Every window you see on the screen (a dialog, your full-screen activity, the status bar) has its own surface that it draws in to, and Surface Flinger renders these to the final display in their correct Z-order. A surface typically has more than one buffer (usually two) to do double-buffered rendering: the application can be drawing its next UI state while the surface flinger is compositing the screen using the last buffer, without needing to wait for the application to finish drawing.</li>
+<li>A window is basically like you think of a window on the desktop. It has a single Surface in which the contents of the window is rendered. An application interacts with the Window Manager to create windows; the Window Manager creates a Surface for each window and gives it to the application for drawing. The application can draw whatever it wants in the Surface; to the Window Manager it is just an opaque rectangle.</li>
+<li>A View is an interactive UI element inside of a window. A window has a single view hierarchy attached to it, which provides all of the behavior of the window. Whenever the window needs to be redrawn (such as because a view has invalidated itself), this is done into the window’s Surface. The Surface is locked, which returns a Canvas that can be used to draw into it. A draw traversal is done down the hierarchy, handing the Canvas down for each view to draw its part of the UI. Once done, the Surface is unlocked and posted so that the just drawn buffer is swapped to the foreground to then be composited to the screen by Surface Flinger.</li>
+<li>A SurfaceView is a special implementation of View that also creates its own dedicated Surface for the application to directly draw into (outside of the normal view hierarchy, which otherwise must share the single Surface for the window). The way this works is simpler than you may expect – all SurfaceView does is ask the window manager to create a new window, telling it to Z-order that window either immediately behind or in front of the SurfaceView’s window, and positioning it to match where the SurfaceView appears in the containing window. If the surface is being placed behind the main window (in Z order), SurfaceView also fills its part of the main window with transparency so that the surface can be seen.</li>
+<li>A Bitmap is just an interface to some pixel data. The pixels may be allocated by Bitmap itself when you are directly creating one, or it may be pointing to pixels it doesn’t own such as what internally happens to hook a Canvas up to a Surface for drawing. (A Bitmap is created and pointed to the current drawing buffer of the Surface.)</li>
+</ul>
+<p>Also please keep in mind that, as this implies, a SurfaceView is a pretty heavy-weight object. If you have multiple SurfaceViews in a particular UI, stop and think about whether this is really needed. If you have more than two, you almost certainly have too many.</p>
+<p>一个window对应一个Surface，对应一个canvas，canvas绘制bitmap(像素信息)，bitmap同步到Surface缓冲区；</p>
+<p>###文本文件/二进制文件###</p>
+<ul>
+<li>本质都是二进制文件，只不过文本文件文件结构是特定的文件的结构，二进制文件是大多数都识别不出来的二进制结构</li>
+<li>计算机解析文件根据后缀名和文件头</li>
+<li>不符合文字编码规范的文件就可以认为是二进制文件（ASCII，Unicode）等等</li>
+</ul>
+<p>在冷启动的过程中，首先会通过AMS在System进程展示一个Starting Window(通常情况下是个白屏，可以通过设置Application的theme修改)，接着AMS会通过Zygote创建应用程序的进程，并通过一系列的步骤后调用Application的attachBaseContext()、onCreate()然后最终调用Activity的onCreate()以及进行View相关的初始化工作。在Activity展示出来后会替换掉之前的Starting Window，这样启动过程结束</p>
+<p>ANR：<a href="http://gityuan.com/2019/04/06/android-anr/" target="_blank" rel="noopener">http://gityuan.com/2019/04/06/android-anr/</a></p>
+<p>###Android-gradle 以及 class:###</p>
+<ul>
+<li>Gradle文件的DSL语法无非包括extension配置和函数调用两种，比如android就是一个extension</li>
+<li>其中函数调用包括：一是Action调用，二是Closure调用（Closure又有owner，delegate，this三个属性，按照优先级访问）</li>
+<li>Task的输入输出，输出不变，增量执行，一般输入输出的属性都需要getter和setter方法，getter方法由gradle调用判断是否需要增量</li>
+<li>TransformOutputProvider （If the format is <a href="https://developer.android.com/reference/tools/gradle-api/com/android/build/api/transform/Format" target="_blank" rel="noopener">Format#DIRECTORY</a> then the result is the file location of the directory.If the format is <a href="https://developer.android.com/reference/tools/gradle-api/com/android/build/api/transform/Format" target="_blank" rel="noopener">Format#JAR</a> then the result is a file representing the jar to create.）</li>
+<li>Transform会被TaskManager.addTransform 转化为一个task，并且自定义transform他们之前是按注册顺序的</li>
+<li>经验证，只有基本数据类型的Field（包括String），被final修饰时，field的属性表中才会有ConstantValue，也就是说ConstantValue并不包括引用类型；一个static final obj 的字段表中的属性表没有constavalue属性，所以准备阶段不会被初始化，只有<clinit>中才会被初始化</clinit></li>
+<li>另外，常量池中，除了符号引用，字面常量指的是所有基本数据类型field的数值，不管这个值是不是被final的field所使用，所以常量池中并不会存在所谓引用的值，只有calss_info类信息</li>
+<li>类的加载，验证，准备（initsField static变量赋默认值，若字段的属性表constantValue，则赋final值），解析（符号引用到直接引用），初始化（<clinit>有static时生成，如果有static final，不会为其赋值，也就是不会生成； <init>构造函数，每个构造函数首先调用成员变量初始化指令，再调用自定义指令。</init></clinit></li>
+</ul>
+<p>###JIT###</p>
+<ul>
+<li>其实JIT的主要技术点，从大的框架上来说，非常简单，就是申请一块既有写权限又有执行权限的内存，然后把你要编译的Java方法，翻译成机器码，写入到这块内存里。当再需要调用原来的Java方法时，就转向调用这块内存</li>
+</ul>
+<p>Android 7.0/7.1的ART引入了全新的Hybrid模式(Interpreter + JIT + AOT)</p>
+<ul>
+<li><p>原理: </p>
+</li>
+<li><ul>
+<li>App在安装时不编译， 所以安装速度快。</li>
+<li>在运行App时， 先走解释器， 然后热点函数会被识别，并被JIT进行编译， 存储在jit code cache， 并产生profile文件(记录热点函数信息)。 </li>
+<li>等手机进入charging和idle状态下， 系统会每隔一段时间扫描App目录下profile文件，并执行AOT编译(Google官方称之为profile-guided compilation)。</li>
+<li>不论是jit编译的binary code, 还是AOT编译的binary code, 它们之间的性能差别不大， 因为它们使用同一个optimizing compiler进行编译。</li>
+</ul>
+</li>
+<li><p>优点: App安装速度快，占用存储少(只编译热点函数)。</p>
+</li>
+<li><p>缺点: 前几次运行会较慢， 只有用户操作得次数越多，jit 和AOT编译后， 性能才会跟上来。</p>
+</li>
+</ul>
+<p>###R文件与优化###</p>
+<ul>
+<li>application工程aapt会合并所以引用到的资源的id生成R文件，public static final，混淆时会进行优化</li>
+<li>非applicaton比如module aar aapt会生成R文件，但是是变量是public static，因为这时的资源id不能固定，会与主工程的id重复，在编译完以后才会对这些R.class的id进行重排与主工程保持一致并设为final，由于已经编译完了没有常量优化，所以R会打包进apk，这部可以通过gradle插件优化；每个R文件都会包含其引用的所有资源的常量值</li>
+<li>资源编号尽量不要重复，否则可能会产生奇怪的错误，控件 id可以重复，只要不在一个View Tree上一般没有问题</li>
+<li>优化：Transform，遍历所有R.class记录key-value，遍历所有class的静态引用，看是否有value，有则替换</li>
+</ul>
+<p>###View的绘制###</p>
+<ul>
+<li>requestLayout / invalidate -&gt; ViewRootImpl.scheduleTraversals -&gt; Choreographer.postCallback(绘制) -&gt; mDisplayEventReceiver.scheduleVsync -&gt; mDisplayEventReceiver.onVsync -&gt; send -&gt; doFrame -&gt; doCallback(触发绘制) -&gt; doTraversal</li>
+</ul>
+<p>动画的绘制</p>
+<ul>
+<li><p>补间动画 View.invalidate -&gt; View.draw -&gt; View.invalidate</p>
+</li>
+<li><p>帧动画 AnimationDrawable.start -&gt; Choreographer.postCallback(动画) -&gt; mDisplayEventReceiver.scheduleVsync -&gt; mDisplayEventReceiver.onVsync -&gt; send -&gt; doFrame -&gt; doCallback(刷新帧) -&gt; setFrame -&gt; Choreographer.postCallback(下一帧动画) </p>
+</li>
+<li><p>属性动画 AnimationHandler.start -&gt; Choreographer.postCallback(动画) -&gt; mDisplayEventReceiver.scheduleVsync -&gt; mDisplayEventReceiver.onVsync -&gt; send -&gt; doFrame -&gt; doCallback(刷新动画属性值) -&gt; doAnimationFrame -&gt; Choreographer.postCallback(动画) </p>
+</li>
+</ul>
+</div><div><ul class="post-copyright"><li class="post-copyright-author"><strong>本文作者：</strong>hopkin</li><li class="post-copyright-link"><strong>本文链接：</strong><a href="/2021/05/16/经验总结（七）/">https://hb-pencil.github.io/2021/05/16/经验总结（七）/</a></li><li class="post-copyright-license"><strong>版权声明：</strong>Copyright © 2019 Hopkin</li></ul></div><br><script type="text/javascript" src="/js/share.js?v=0.0.0" async></script><a class="article-share-link" data-url="https://hb-pencil.github.io/2021/05/16/经验总结（七）/" data-id="ckoqv7b1d005i30iblb4uilf3" data-qrcode="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAMYAAADGCAAAAACs8KCBAAACH0lEQVR42u3aS5KDMAwFwNz/0sx2ZhF4kmCqsJtVKiHYnYWijz+f+Dp+XZP3z+9JvjW6MDAwXss4Tq9v9yQLJ0/On3/+BAwMjB0Y3zaR3JPzqltM9oaBgYGRkHLM5DUGBgZGL+CWE7jT+zEwMDDOGdVH99LB3s93cy2OgYHxQkbedf//14/MNzAwMF7FOIpX3nqrDjJHu8LAwFiakQe4+VBznjJeHObAwMDYmJEHxISdl6xVGAYGxqqMJIDmn95VAOff/ZPhYmBgLMrodbF6qeFk2HlDpxADA+O1jPwRkzHnbaEzOWaBgYGxHKO39aS4nQ8G8p8bAwNjB0Z1VJkH0LtachEYAwNjUcakcZ83zvJgXY2iGBgYOzAmzbXJwsmAIT98hoGBsTZj0kTLg2w1xSwfKcPAwFiakbfd8zK1d1Cjmj5G/x4YGBjLMXpFaa9VV003y1NZDAyMzRi9hauBO9/JxeoYGBiLMnotsGpbrdpuKxexGBgY2zCqyWJhuNhqtxXCOgYGxmaMJLBWt/LE0QoMDIzdGHkqNj/ZMWmuFWYaGBgYSzB6BeckpFbDazRswMDAWJoxD3b5dvPRQq94xsDAWJvROzxRBSS8XtmMgYGxDyNfJg/E1SZdNfRftNswMDAwTgNxEmqrpXJUkWNgYGAMgmwvTSwkjhgYGBsweuEvHzDkjbzH220YGBgvZOSlY/WgRjISmJS7GBgYGzB+AFiUk2HXSCn9AAAAAElFTkSuQmCC">分享</a><div class="tags"><a href="/tags/小技巧/">小技巧</a><a href="/tags/零碎知识/">零碎知识</a><a href="/tags/经验总结/">经验总结</a></div><div class="post-nav"><a class="next" href="/2020/03/22/SharePreferences原理浅析/">SharePreferences原理浅析</a></div></div></div></div><div class="pure-u-1-4 hidden_mid_and_down"><div id="sidebar"><div class="widget"><div class="widget-title"><i class="fa fa-folder-o"> 分类</i></div><ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/计算机基础/">计算机基础</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/计算机基础/Android基础/">Android基础</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/计算机基础/Android知识/">Android知识</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/计算机基础/数据结构与算法/">数据结构与算法</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/计算机基础/计算机网络/">计算机网络</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/计算机基础/计算机语言/">计算机语言</a></li></ul></li></ul></div><div class="widget"><div class="widget-title"><i class="fa fa-star-o"> 标签</i></div><div class="tagcloud"><a href="/tags/经验记录/" style="font-size: 15px;">经验记录</a> <a href="/tags/随笔杂文/" style="font-size: 15px;">随笔杂文</a> <a href="/tags/小技巧/" style="font-size: 15px;">小技巧</a> <a href="/tags/计算机知识/" style="font-size: 15px;">计算机知识</a> <a href="/tags/零碎知识/" style="font-size: 15px;">零碎知识</a> <a href="/tags/他山之石/" style="font-size: 15px;">他山之石</a> <a href="/tags/新技术/" style="font-size: 15px;">新技术</a> <a href="/tags/胡思乱想/" style="font-size: 15px;">胡思乱想</a> <a href="/tags/经验总结/" style="font-size: 15px;">经验总结</a> <a href="/tags/kotlin/" style="font-size: 15px;">kotlin</a></div></div><div class="widget"><div class="widget-title"><i class="fa fa-file-o"> 最近文章</i></div><ul class="post-list"><li class="post-list-item"><a class="post-list-link" href="/2021/05/16/经验总结（七）/">经验总结（七）</a></li><li class="post-list-item"><a class="post-list-link" href="/2020/03/22/SharePreferences原理浅析/">SharePreferences原理浅析</a></li><li class="post-list-item"><a class="post-list-link" href="/2020/01/12/Binder IPC/">Binder & TCP</a></li><li class="post-list-item"><a class="post-list-link" href="/2020/01/04/经验总结（六）/">经验总结（六）</a></li><li class="post-list-item"><a class="post-list-link" href="/2020/01/04/经验总结（五）/">经验总结（五）</a></li><li class="post-list-item"><a class="post-list-link" href="/2019/11/23/Activity的启动过程浅析/">Activity的启动过程浅析</a></li><li class="post-list-item"><a class="post-list-link" href="/2019/11/22/kotlin的若干特性/">Kotln的若干特性</a></li><li class="post-list-item"><a class="post-list-link" href="/2019/10/20/经验总结（四）/">经验总结（四）</a></li><li class="post-list-item"><a class="post-list-link" href="/2019/09/08/经验总结（三）/">经验总结（三）</a></li><li class="post-list-item"><a class="post-list-link" href="/2019/08/25/事件总线思想简述/">事件总线思想简述</a></li></ul></div></div></div><div class="pure-u-1 pure-u-md-3-4"><div id="footer">Copyright © 2021 <a href="/." rel="nofollow">Hopkin.</a> Powered by<a rel="nofollow" target="_blank" href="https://hexo.io"> Hexo.</a><a rel="nofollow" target="_blank" href="https://github.com/tufu9441/maupassant-hexo"> Theme</a> by<a rel="nofollow" target="_blank" href="https://github.com/pagecho"> Cho.</a></div></div></div><a class="show" id="rocket" href="#top"></a><script type="text/javascript" src="/js/totop.js?v=0.0.0" async></script><script type="text/javascript" src="//lib.baomitu.com/fancybox/3.5.2/jquery.fancybox.min.js" async></script><script type="text/javascript" src="/js/fancybox.js?v=0.0.0" async></script><link rel="stylesheet" type="text/css" href="//lib.baomitu.com/fancybox/3.5.2/jquery.fancybox.min.css"><script type="text/javascript" src="/js/codeblock-resizer.js?v=0.0.0"></script><script type="text/javascript" src="/js/smartresize.js?v=0.0.0"></script></div></body></html>
